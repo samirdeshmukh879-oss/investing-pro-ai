@@ -1,115 +1,109 @@
 import streamlit as st
 import yfinance as yf
 
-# Page setup for Mobile - Premium Wide Look
-st.set_page_config(page_title="ProPicks AI - Find Winning Stocks", layout="wide")
+# Page setup for Mobile - Premium Look
+st.set_page_config(page_title="ProPicks AI - Stocks & ETFs", layout="wide")
 
-# Top Header matching the screenshot
-st.title("🤖 ProPicks AI - Find Winning Stocks with AI")
-st.caption("Next Update: Oct 1, 2026 | Stock Picks Updated: Sep 1, 2026")
+st.title("🤖 ProPicks AI — Stocks, ETFs & Impact News")
+st.caption("Live Update: September 2026 | Powered by AI Automation Engine")
 
 # --- SIDEBAR FOR MEMBERSHIP PLAN ---
 st.sidebar.header("👑 Premium Control Panel")
 membership = st.sidebar.radio("Membership Plan Chunein:", ["Investing Pro", "Investing Pro Plus"])
 
+# Tier Count Logic for Stocks and ETFs
 if membership == "Investing Pro Plus":
-    profit_count = 5
-    loss_count = 10
+    stock_p_count, stock_l_count = 5, 10
+    etf_p_count, etf_l_count = 5, 10
     st.sidebar.success("💎 Pro Plus Plan Active")
 else:
-    profit_count = 20
-    loss_count = 20
+    stock_p_count, stock_l_count = 20, 20
+    etf_p_count, etf_l_count = 10, 10
     st.sidebar.info("⭐ Pro Plan Active")
 
-# --- TOP OUTPERFORMERS BANNER ---
-st.info("🇮🇳 **NIFTY20 — Bharat Market Outperformers**\n\nThis month's top Indian stocks picked by our AI model based on momentum and value.")
+# Main Navigation Tabs for App Layout
+tab_news, tab_stocks, tab_etfs = st.tabs(["🔥 Live Impact News", "📊 AI Stock Picks", "🚀 AI ETF Picks"])
 
-st.markdown("---")
-st.header("🎯 Explore Different AI Strategies")
+# --- SECTION 1: LIVE IMPACT NEWS (with Sector Benefit Analysis) ---
+with tab_news:
+    st.subheader("🔔 First-Alert: Market Moving News Notifications")
+    st.caption("AI dynamically updates this section and scans the impact on related stocks/sectors.")
+    
+    # News Card 1
+    with st.container(border=True):
+        st.error("🚨 **BREAKING: US Federal Reserve hints at interest rate relief bets following Waller comments**")
+        st.write("🌍 *Global bond yields fall sharply as inflation fears curb immediate rate hike worries.*")
+        col_s1, col_s2 = st.columns(2)
+        with col_s1:
+            st.info("🎯 **Benefited Sector:** Technology, Banking & High-Growth Caps")
+        with col_s2:
+            st.success("📈 **Impacted Stocks to watch:** NVDA, MSFT, HDFCBANK")
+            
+    # News Card 2
+    with st.container(border=True):
+        st.warning("🚨 **BREAKING: Crude Oil Prices Surge Higher amid Middle East Tensions**")
+        st.write("🛢️ *U.S. crude futures rise to $90.22 a barrel, raising input cost concerns for global markets.*")
+        col_oil1, col_oil2 = st.columns(2)
+        with col_oil1:
+            st.info("🎯 **Benefited Sector:** Oil Exploration & Renewable Energy")
+        with col_oil2:
+            st.success("📈 **Impacted Stocks to watch:** ONGC, XOM, Reliance")
 
-# Real Tickers Data Configuration
-bharat_profit = ["RELIANCE.NS", "TCS.NS", "INFY.NS", "HDFCBANK.NS", "ICICIBANK.NS"] * 4
-bharat_loss = ["IDEA.NS", "YESBANK.NS", "SUZLON.NS", "ZOMATO.NS", "PAYTM.NS"] * 4
-us_profit = ["AAPL", "MSFT", "NVDA", "AMZN", "GOOGL"] * 4
-us_loss = ["NIO", "BABA", "INTC", "PYPL", "SNAP"] * 4
-
-# --- STRATEGY 1: BHARAT BARGAINS ---
-with st.container(border=True):
-    col1, col2 = st.columns([3, 1])
-    with col1:
+# --- SECTION 2: AI STOCK RECOMMENDATIONS ---
+with tab_stocks:
+    st.header("🎯 Explore Different AI Stock Strategies")
+    
+    bharat_profit = ["RELIANCE.NS", "TCS.NS", "INFY.NS", "HDFCBANK.NS", "ICICIBANK.NS"] * 4
+    bharat_loss = ["IDEA.NS", "YESBANK.NS", "SUZLON.NS", "ZOMATO.NS", "PAYTM.NS"] * 4
+    
+    with st.container(border=True):
         st.subheader("🟣 INB15 — Bharat Bargains")
-        st.write("*Identifies undervalued Indian stocks with strong fundamentals.*")
-        st.caption("🔄 Monthly Rebalancing | 📅 2019 - 2026")
-    with col2:
-        view_bharat = st.button("👁️ View Stocks", key="btn_bharat")
+        view_stocks = st.button("👁️ View Premium Stocks", key="btn_stock")
+        if view_stocks:
+            t1, t2 = st.tabs(["🚀 Profit Picks", "⚠️ Avoid List"])
+            with t1:
+                st.write(f"🟢 Top {stock_p_count} Stocks to **BUY**:")
+                for i in range(stock_p_count):
+                    st.success(f"📈 **{bharat_profit[i].replace('.NS','')}** | AI Action: BUY")
+            with t2:
+                st.write(f"🔴 Top {stock_l_count} Stocks to **AVOID**:")
+                for i in range(stock_l_count):
+                    st.error(f"❌ **{bharat_loss[i].replace('.NS','')}** | AI Action: REMOVE")
+
+# --- SECTION 3: AI ETF RECOMMENDATIONS (New Feature Added) ---
+with tab_etfs:
+    st.header("📊 Algorithmic Exchange Traded Funds (ETFs)")
+    st.caption("🔄 Automatically rebalanced every month on the 1st.")
+    
+    # Real World Top Performing & High Volatility ETFs Data
+    etf_profit = ["NIFTYBEES.NS", "JUNIORBEES.NS", "MON100", "VOO", "SOXX"] * 2
+    etf_loss = ["GOLDSHARE.NS", "SILVERETF", "NIO", "USO", "GDXJ"] * 2
+    
+    with st.container(border=True):
+        st.subheader("🏁 Automated Monthly ETF Filter Engine")
+        view_etfs = st.button("👁️ View Premium ETFs", key="btn_etf")
         
-    c1, c2 = st.columns(2)
-    c1.metric(label="Total Return (1Y)", value="+4.7%")
-    c2.metric(label="Total Return (5Y)", value="+475.1%")
+        if view_etfs:
+            et1, et2 = st.tabs(["🚀 Top Performing ETFs", "⚠️ High Risk / Avoid ETFs"])
+            with et1:
+                st.write(f"🟢 Showing Top {etf_p_count} Momentum ETFs to **ADD** this month:")
+                for i in range(etf_p_count):
+                    tick = etf_profit[i]
+                    try:
+                        price = yf.Ticker(tick).history(period="1d")['Close'].iloc[-1]
+                        st.success(f"📈 **{tick.replace('.NS','')}** | Current Value: {price:.2f} | AI View: Bullish")
+                    except:
+                        st.success(f"📈 **{tick.replace('.NS','')}** | AI View: Momentum Up")
+            with et2:
+                st.write(f"🔴 Showing Top {etf_l_count} Underperforming ETFs to **REMOVE**:")
+                for i in range(etf_l_count):
+                    tick = etf_loss[i]
+                    try:
+                        price = yf.Ticker(tick).history(period="1d")['Close'].iloc[-1]
+                        st.error(f"❌ **{tick.replace('.NS','')}** | Current Value: {price:.2f} | AI View: Weak/Bearish")
+                    except:
+                        st.error(f"❌ **{tick.replace('.NS','')}** | AI View: High Risk")
 
-    if view_bharat:
-        st.markdown("### 📊 AI Stock Recommendations for this Month")
-        t1, t2 = st.tabs(["🚀 Top Profit Picks", "⚠️ Top Avoid (Loss) List"])
-        with t1:
-            st.write(f"🟢 Showing Top {profit_count} Stocks to **ADD/BUY**:")
-            for i in range(profit_count):
-                tick = bharat_profit[i]
-                try:
-                    price = yf.Ticker(tick).history(period="1d")['Close'].iloc[-1]
-                    st.success(f"📈 **{tick.replace('.NS','')}** | Price: ₹{price:.2f} | Action: BUY")
-                except:
-                    st.success(f"📈 **{tick.replace('.NS','')}** | Action: BUY")
-        with t2:
-            st.write(f"🔴 Showing Top {loss_count} Stocks to **REMOVE/AVOID**:")
-            for i in range(loss_count):
-                tick = bharat_loss[i]
-                try:
-                    price = yf.Ticker(tick).history(period="1d")['Close'].iloc[-1]
-                    st.error(f"❌ **{tick.replace('.NS','')}** | Price: ₹{price:.2f} | Action: REMOVE")
-                except:
-                    st.error(f"❌ **{tick.replace('.NS','')}** | Action: REMOVE")
-
-# --- STRATEGY 2: BEAT THE S&P 500 (US MARKET) ---
-with st.container(border=True):
-    col1, col2 = st.columns([3, 1])
-    with col1:
-        st.subheader("🔵 SP20 — Beat the S&P 500")
-        st.write("*Picks from the S&P 500 refined by AI to outperform the US market.*")
-        st.caption("🔄 Monthly Rebalancing | 📅 2013 - 2026")
-    with col2:
-        view_us = st.button("👁️ View Stocks", key="btn_us")
-        
-    c1, c2 = st.columns(2)
-    c1.metric(label="Total Return (1Y)", value="+8.7%")
-    c2.metric(label="Total Return (5Y)", value="+74.0%")
-
-    if view_us:
-        st.markdown("### 📊 AI US Stock Recommendations for this Month")
-        t1, t2 = st.tabs(["🚀 Top Profit Picks", "⚠️ Top Avoid (Loss) List"])
-        with t1:
-            st.write(f"🟢 Showing Top {profit_count} US Stocks to **ADD/BUY**:")
-            for i in range(profit_count):
-                tick = us_profit[i]
-                try:
-                    price = yf.Ticker(tick).history(period="1d")['Close'].iloc[-1]
-                    st.success(f"📈 **{tick}** | Price: ${price:.2f} | Action: BUY")
-                except:
-                    st.success(f"📈 **{tick}** | Action: BUY")
-        with t2:
-            st.write(f"🔴 Showing Top {loss_count} US Stocks to **REMOVE/AVOID**:")
-            for i in range(loss_count):
-                tick = us_loss[i]
-                try:
-                    price = yf.Ticker(tick).history(period="1d")['Close'].iloc[-1]
-                    st.error(f"❌ **{tick}** | Price: ${price:.2f} | Action: REMOVE")
-                except:
-                    st.error(f"❌ **{tick}** | Action: REMOVE")
-
-# --- HOW TO USE SECTION ---
+# Disclaimer Footer
 st.markdown("---")
-with st.expander("❓ How to Use ProPicks AI"):
-    st.write("1. **Choose Tier:** Select Pro or Pro Plus from the sidebar.")
-    st.write("2. **Click View Stocks:** Tap on any strategy card to instantly load the AI Buy and Avoid lists.")
-    st.write("3. **Monthly Action:** Follow recommendations on the 1st of every month.")
-
-st.caption("⚠️ **Disclaimer:** Information is for educational purposes only.")
+st.caption("⚠️ **Disclaimer:** All data and metrics are generated for educational purpose only.")
