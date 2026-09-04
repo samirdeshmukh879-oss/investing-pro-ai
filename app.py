@@ -123,7 +123,7 @@ with tab_us:
             with us_pp_e_avoid:
                 for i in range(10): st.error(f"❌ **{us_etf_loss[i]}** | 🔴 Exit Zone Alert")
 
-# --- COLUMN 4: 🔍 BROKER-STYLE SEARCH ENGINE ---
+# --- COLUMN 4: 🔍 BROKER-STYLE SEARCH ENGINE (Fixed Connection and Structure) ---
 with tab_search:
     st.header("🔍 Broker-Style Deep Analytics Terminal")
     st.write("Broker app ki tarah kisi bhi stock ka naam ya code chunen, suggestion list apne aap aa jayegi.")
@@ -157,7 +157,6 @@ with tab_search:
                     
                     st.success(f"🏢 **Official Company Name:** {long_name}  |  💼 **Sector Pool:** {sector_name}")
                     
-                    # Exact indentation fixed line
                     if "IDEA" in user_search or "YESBANK" in user_search or "SUZLON" in user_search or "NIO" in user_search:
                         st.error("🚨 **REMOVE CRITICAL ALERT:** AI trend index detects heavy weakness. Exit immediately!")
                     else:
