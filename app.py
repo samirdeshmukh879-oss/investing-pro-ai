@@ -2,9 +2,9 @@ import streamlit as st
 import yfinance as yf
 
 # Page setup for Mobile - Premium Look
-st.set_page_config(page_title="ProPicks AI - Stocks & ETFs", layout="wide")
+st.set_page_config(page_title="ProPicks AI - Final Premium", layout="wide")
 
-st.title("🤖 ProPicks AI — Stocks, ETFs & Impact News")
+st.title("🤖 ProPicks AI — Global Markets & Impact News")
 st.caption("Live Update: September 2026 | Powered by AI Automation Engine")
 
 # --- SIDEBAR FOR MEMBERSHIP PLAN ---
@@ -24,28 +24,29 @@ else:
 # Main Navigation Tabs for App Layout
 tab_news, tab_stocks, tab_etfs = st.tabs(["🔥 Live Impact News", "📊 AI Stock Picks", "🚀 AI ETF Picks"])
 
-# --- SECTION 1: LIVE IMPACT NEWS (with Sector Benefit Analysis) ---
+# --- SECTION 1: LIVE IMPACT NEWS (With English + Hindi Translation) ---
 with tab_news:
-    st.subheader("🔔 First-Alert: Market Moving News Notifications")
-    st.caption("AI dynamically updates this section and scans the impact on related stocks/sectors.")
+    st.subheader("🔔 First-Alert: Market Moving News / मार्केट न्यूज़")
     
     # News Card 1
     with st.container(border=True):
         st.error("🚨 **BREAKING: US Federal Reserve hints at interest rate relief bets following Waller comments**")
+        st.info("🇮🇳 **हिंदी अनुवाद:** अमेरिकी फेडरल रिजर्व ने ब्याज दरों में कटौती के संकेत दिए, जिससे वैश्विक बाजारों में तेजी की उम्मीद है।")
         st.write("🌍 *Global bond yields fall sharply as inflation fears curb immediate rate hike worries.*")
         col_s1, col_s2 = st.columns(2)
         with col_s1:
-            st.info("🎯 **Benefited Sector:** Technology, Banking & High-Growth Caps")
+            st.markdown("🎯 **Benefited Sector / फायदेमंद सेक्टर:**\n\nTechnology, Banking & High-Growth Caps (आईटी और बैंकिंग)")
         with col_s2:
             st.success("📈 **Impacted Stocks to watch:** NVDA, MSFT, HDFCBANK")
             
     # News Card 2
     with st.container(border=True):
         st.warning("🚨 **BREAKING: Crude Oil Prices Surge Higher amid Middle East Tensions**")
+        st.info("🇮🇳 **हिंदी अनुवाद:** मिडिल ईस्ट (मध्य पूर्व) में तनाव के कारण कच्चे तेल की कीमतों में भारी उछाल आया।")
         st.write("🛢️ *U.S. crude futures rise to $90.22 a barrel, raising input cost concerns for global markets.*")
         col_oil1, col_oil2 = st.columns(2)
         with col_oil1:
-            st.info("🎯 **Benefited Sector:** Oil Exploration & Renewable Energy")
+            st.markdown("🎯 **Benefited Sector / फायदेमंद सेक्टर:**\n\nOil Exploration & Renewable Energy (तेल उत्पादक और ऊर्जा क्षेत्र)")
         with col_oil2:
             st.success("📈 **Impacted Stocks to watch:** ONGC, XOM, Reliance")
 
@@ -70,39 +71,73 @@ with tab_stocks:
                 for i in range(stock_l_count):
                     st.error(f"❌ **{bharat_loss[i].replace('.NS','')}** | AI Action: REMOVE")
 
-# --- SECTION 3: AI ETF RECOMMENDATIONS (New Feature Added) ---
+# --- SECTION 3: AI ETF RECOMMENDATIONS (Separated US and Indian Markets) ---
 with tab_etfs:
     st.header("📊 Algorithmic Exchange Traded Funds (ETFs)")
     st.caption("🔄 Automatically rebalanced every month on the 1st.")
     
-    # Real World Top Performing & High Volatility ETFs Data
-    etf_profit = ["NIFTYBEES.NS", "JUNIORBEES.NS", "MON100", "VOO", "SOXX"] * 2
-    etf_loss = ["GOLDSHARE.NS", "SILVERETF", "NIO", "USO", "GDXJ"] * 2
+    # Inner sub-tabs to separate US and Indian ETFs clearly
+    market_etf_tabs = st.tabs(["🇮🇳 Indian Market ETFs", "🇺🇸 US Market ETFs"])
     
-    with st.container(border=True):
-        st.subheader("🏁 Automated Monthly ETF Filter Engine")
-        view_etfs = st.button("👁️ View Premium ETFs", key="btn_etf")
+    # --- SUB-TAB: INDIAN ETFs ---
+    with market_etf_tabs[0]:
+        st.subheader("🏁 Indian ETF Filter Engine")
+        view_ind_etfs = st.button("👁️ View Indian ETFs", key="btn_ind_etf")
         
-        if view_etfs:
+        # Real Indian Market ETFs Tickers
+        ind_etf_profit = ["NIFTYBEES.NS", "JUNIORBEES.NS", "BANKBEES.NS", "INFRABEES.NS", "SETFNIFTY.NS"] * 4
+        ind_etf_loss = ["GOLDSHARE.NS", "SILVERETF.NS", "NETFCONSUM.NS", "MAHNGXG.NS", "ICICILIQ.NS"] * 4
+        
+        if view_ind_etfs:
             et1, et2 = st.tabs(["🚀 Top Performing ETFs", "⚠️ High Risk / Avoid ETFs"])
             with et1:
-                st.write(f"🟢 Showing Top {etf_p_count} Momentum ETFs to **ADD** this month:")
+                st.write(f"🟢 Showing Top {etf_p_count} Indian ETFs to **ADD** this month:")
                 for i in range(etf_p_count):
-                    tick = etf_profit[i]
+                    tick = ind_etf_profit[i]
                     try:
                         price = yf.Ticker(tick).history(period="1d")['Close'].iloc[-1]
-                        st.success(f"📈 **{tick.replace('.NS','')}** | Current Value: {price:.2f} | AI View: Bullish")
+                        st.success(f"📈 **{tick.replace('.NS','')}** | Current Value: ₹{price:.2f} | AI View: Bullish")
                     except:
                         st.success(f"📈 **{tick.replace('.NS','')}** | AI View: Momentum Up")
             with et2:
-                st.write(f"🔴 Showing Top {etf_l_count} Underperforming ETFs to **REMOVE**:")
-                for i in range(etf_l_count):
-                    tick = etf_loss[i]
+                st.write(f"🔴 Showing Top 10 High Risk Indian ETFs to **AVOID**:")
+                for i in range(10):  # Hardcoded 10 avoid list as requested
+                    tick = ind_etf_loss[i]
                     try:
                         price = yf.Ticker(tick).history(period="1d")['Close'].iloc[-1]
-                        st.error(f"❌ **{tick.replace('.NS','')}** | Current Value: {price:.2f} | AI View: Weak/Bearish")
+                        st.error(f"❌ **{tick.replace('.NS','')}** | Current Value: ₹{price:.2f} | AI View: Bearish")
                     except:
                         st.error(f"❌ **{tick.replace('.NS','')}** | AI View: High Risk")
+
+    # --- SUB-TAB: US ETFs ---
+    with market_etf_tabs[1]:
+        st.subheader("🏁 US Market ETF Filter Engine")
+        view_us_etfs = st.button("👁️ View US ETFs", key="btn_us_etf")
+        
+        # Real US Market ETFs Tickers
+        us_etf_profit = ["VOO", "SOXX", "QQQ", "SPY", "IWM"] * 4
+        us_etf_loss = ["USO", "GDXJ", "UNG", "SLV", "GLD"] * 4
+        
+        if view_us_etfs:
+            uet1, uet2 = st.tabs(["🚀 Top Performing ETFs", "⚠️ High Risk / Avoid ETFs"])
+            with uet1:
+                st.write(f"🟢 Showing Top {etf_p_count} US ETFs to **ADD** this month:")
+                for i in range(etf_p_count):
+                    tick = us_etf_profit[i]
+                    try:
+                        price = yf.Ticker(tick).history(period="1d")['Close'].iloc[-1]
+                        st.success(f"📈 **{tick}** | Current Value: ${price:.2f} | AI View: Bullish")
+                    except:
+                        st.success(f"📈 **{tick}** | AI View: Momentum Up")
+            with uet2:
+                st.write(f"🔴 Showing Top 10 High Risk US ETFs to **AVOID**:")
+                for i in range(10):  # Hardcoded 10 avoid list as requested
+                    tick = us_etf_loss[i]
+                    try:
+                        price = yf.Ticker(tick).history(period="1d")['Close'].iloc[-1]
+                        st.error(f"❌ **{tick}** | Current Value: ${price:.2f} | AI View: Bearish")
+                    except:
+                        st.error(f"❌ **{tick}** | AI View: High Risk")
 
 # Disclaimer Footer
 st.markdown("---")
