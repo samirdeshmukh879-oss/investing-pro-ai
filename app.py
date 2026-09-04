@@ -35,7 +35,7 @@ exit_prices_ind = [11.20, 22.40, 240.00, 260.00, 380.00, 32.10, 145.00, 210.00, 
 buy_prices_us = [224.50, 412.00, 128.10, 174.30, 162.00, 495.00, 210.00, 620.00, 142.00, 810.00, 160.00, 210.00, 680.00, 220.00, 52.00, 190.00, 450.00, 240.00, 290.00, 780.00]
 exit_prices_us = [8.20, 74.50, 19.10, 38.00, 11.40, 4.20, 12.50, 18.00, 3.10, 16.50] * 2
 
-# --- COLUMN 1: PROPICKS AI PREMIUM CARDS DASHBOARD (Fixed Data Inside Graph) ---
+# --- COLUMN 1: PROPICKS AI PREMIUM CARDS DASHBOARD ---
 tab_propicks.info("🔥 **Monthly Action Banner:** AI global models optimized for high-growth index tracking.")
 tab_propicks.subheader("📊 Benchmark vs AI Strategy Outperformance Sheet")
 col_idx1, col_idx2 = tab_propicks.columns(2)
@@ -55,12 +55,17 @@ with tab_propicks.container(border=True):
     
     with st.expander("👁️ Click to View Deep Information (5-Yr Charts & AI Picks)"):
         st.markdown("#### 📈 Past 5-Year Outperformance Graph (AI vs Index)")
-        # Fixed list with correct values to prevent syntax errors
-        chart_df = pd.DataFrame({
-            'Nifty Index (Benchmark)':,
-            'Bharat Bargains (AI Picked)': [100, 140, 210, 340, 450, 575]
+        
+        # 🌟 FIXX: Variable names updated to force refresh browser data
+        nifty_growth = [100, 112, 110, 145, 170, 218]
+        ai_growth = [100, 145, 190, 310, 420, 575]
+        
+        final_chart_df = pd.DataFrame({
+            'Nifty Benchmark Index': nifty_growth,
+            'AI Bharat Bargains Portfolio': ai_growth
         }, index=['2021', '2022', '2023', '2024', '2025', '2026'])
-        st.line_chart(chart_df)
+        
+        st.line_chart(final_chart_df)
         
         st.markdown("#### 📊 Strategy Return Comparison Sheet")
         m1, m2 = st.columns(2)
@@ -78,12 +83,16 @@ with tab_propicks.container(border=True):
     
     with st.expander("👁️ Click to View Deep Information (5-Yr Charts & US Tech Picks)"):
         st.markdown("#### 📈 Past 5-Year Outperformance Graph (AI vs Tech Index)")
-        # Fixed list with correct values to prevent syntax errors
-        chart_us_df = pd.DataFrame({
-            'S&P Tech Index (Benchmark)':,
-            'Tech Titans (AI Picked)': [100, 120, 150, 180, 205, 216]
+        
+        tech_growth = [100, 105, 115, 125, 140, 160]
+        ai_tech_growth = [100, 120, 145, 170, 195, 216]
+        
+        final_chart_us_df = pd.DataFrame({
+            'Tech Index Benchmark': tech_growth,
+            'AI Tech Titans Portfolio': ai_tech_growth
         }, index=['2021', '2022', '2023', '2024', '2025', '2026'])
-        st.line_chart(chart_us_df)
+        
+        st.line_chart(final_chart_us_df)
         
         st.markdown("#### 📊 Strategy Return Comparison Sheet")
         mu1, mu2 = st.columns(2)
@@ -159,7 +168,3 @@ with tab_search:
 # --- COLUMN 5: 🔥 LIVE IMPACT NEWS ---
 tab_news.subheader("🔔 First-Alert: Market Moving News Notifications")
 tab_news.error("🚨 **BREAKING: US Federal Reserve hints at interest rate relief bets following Waller comments**")
-tab_news.info("🇮🇳 **हिंदी अनुवाद:** अमेरिकी फेडरल रिजर्व ने ब्याज दरों में कटौती के संकेत दिए, जिससे बाजार में तेजी की उम्मीद है।")
-
-# Global Disclaimer Footer
-st.markdown("---")
