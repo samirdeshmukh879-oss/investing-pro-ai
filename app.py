@@ -123,7 +123,7 @@ with tab_us:
             with us_pp_e_avoid:
                 for i in range(10): st.error(f"❌ **{us_etf_loss[i]}** | 🔴 Exit Zone Alert")
 
-# --- COLUMN 4: 🔍 BROKER-STYLE SEARCH ENGINE (Fixed Connection and Structure) ---
+# --- COLUMN 4: 🔍 BROKER-STYLE SEARCH ENGINE ---
 with tab_search:
     st.header("🔍 Broker-Style Deep Analytics Terminal")
     st.write("Broker app ki tarah kisi bhi stock ka naam ya code chunen, suggestion list apne aap aa jayegi.")
@@ -138,27 +138,32 @@ with tab_search:
     user_search = st.selectbox("Type to Search Stock or ETF (नाम या कोड चुनें):", comprehensive_pool)
     
     if user_search:
-        with st.spinner(f"Connecting Financial Stream for {user_search}..."):
-            try:
-                asset = yf.Ticker(user_search)
-                hist_data = asset.history(period="5y")
-                info = asset.info
-                
-                if not hist_data.empty:
-                    current_price = hist_data['Close'].iloc[-1]
-                    currency = "$" if "." not in user_search else "₹"
-                    
-                    buying_price = current_price * 0.98
-                    exit_price = current_price * 1.12
-                    stop_loss = current_price * 0.95
-                    
-                    long_name = info.get('longName', user_search)
-                    sector_name = info.get('sector', 'ETF Fund / Index Asset')
-                    
-                    st.success(f"🏢 **Official Company Name:** {long_name}  |  💼 **Sector Pool:** {sector_name}")
-                    
-                    if "IDEA" in user_search or "YESBANK" in user_search or "SUZLON" in user_search or "NIO" in user_search:
-                        st.error("🚨 **REMOVE CRITICAL ALERT:** AI trend index detects heavy weakness. Exit immediately!")
-                    else:
-                        st.warning(f"⚠️ **Monthly Rebalance View:** Suggested Entry: {currency}{buying_price:.2f} | Exit Target: {currency}{exit_price:.2f}")
+        asset = yf.Ticker(user_search)
+        hist_data = asset.history(period="5y")
+        
+        current_price = hist_data['Close'].iloc[-1]
+        currency = "$" if "." not in user_search else "₹"
+        
+        buying_price = current_price * 0.98
+        exit_price = current_price * 1.12
+        stop_loss = current_price * 0.95
+        
+        st.success(f"🏢 **Selected Ticker Asset:** {user_search}")
+        
+        if "IDEA" in user_search or "YESBANK" in user_search or "SUZLON" in user_search or "NIO" in user_search:
+            st.error("🚨 **REMOVE CRITICAL ALERT:** AI trend detects heavy weakness. Exit immediately!")
+        else:
+            st.warning(f"⚠️ **Monthly Rebalance View:** Suggested Entry: {currency}{buying_price:.2f} | Exit Target: {currency}{exit_price:.2f}")
 
+        st.subheader("🚦 Entry-Exit Pricing Multipliers")
+        c1, c2, c3 = st.columns(3)
+        c1.metric(label="🟢 AI Entry Price", value=f"{currency}{buying_price:.2f}")
+        c2.metric(label="🎯 AI Exit Target", value=f"{currency}{exit_price:.2f}")
+        c3.metric(label="🛑 Risk Stop Loss", value=f"{currency}{stop_loss:.2f}")
+        st.info(f"💡 **Live Market Rate:** Currently trading at {currency}{current_price:.2f}")
+
+        st.subheader(f"📈 {user_search} — 5 Year Interactive Price Graph")
+        st.line_chart(hist_data['Close'])
+
+# --- COLUMN 5: 🔥 LIVE IMPACT NEWS ---
+with tab_news:
