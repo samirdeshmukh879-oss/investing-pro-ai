@@ -47,17 +47,18 @@ col_idx2.metric(label="AI NIFTY20 Portfolio Return (5Y)", value="+1,100.1%")
 tab_propicks.markdown("---")
 tab_propicks.subheader("🎯 Active Investment Strategies (Click details text underneath for deep info)")
 
-# Strategy Card 1: Bharat Bargains
+# Strategy Card 1: Bharat Bargains (Fixed Data Inside Chart)
 with tab_propicks.container(border=True):
     st.subheader("🟣 INB15 — Bharat Bargains")
     st.write("*Identifies undervalued Indian stocks with strong fundamentals.*")
     st.metric(label="Total Return (5Y)", value="+475.1%")
     
-    # 🆕 NEW REQUIREMENT: Click to open deep information details expansion
     with st.expander("👁️ Click to View Deep Information (5-Yr Chart, Index List & AI Picks)"):
         st.markdown("#### 📈 Past 5-Year Comparative Performance Chart")
-        # Simulating a dynamic trend dataset comparison inside line graph
-        sim_data = pd.DataFrame({'Bharat Bargains Portfolio':, 'Nifty Benchmark': [100, 120, 140, 170, 190, 218]}, index=['2021', '2022', '2023', '2024', '2025', '2026'])
+        sim_data = pd.DataFrame({
+            'Bharat Bargains Portfolio':, 
+            'Nifty Benchmark': [100, 120, 140, 170, 195, 218]
+        }, index=['2021', '2022', '2023', '2024', '2025', '2026'])
         st.line_chart(sim_data)
         
         st.markdown("#### 📊 Strategy Outperformance Sheet Metrics")
@@ -68,7 +69,7 @@ with tab_propicks.container(border=True):
         st.markdown("#### 📋 AI Monthly Curated Picks for Bharat Bargains")
         for i in range(5): st.success(f"🚀 AI Picked Stock #{i+1}: **{bharat_profit[i]}** | Target Position Active")
 
-# Strategy Card 2: Tech Titans
+# Strategy Card 2: Tech Titans (Fixed Data Inside Chart)
 with tab_propicks.container(border=True):
     st.subheader("🟡 IT15 — Tech Titans")
     st.write("*Algorithmic tech trend picks for global dominance.*")
@@ -76,7 +77,10 @@ with tab_propicks.container(border=True):
     
     with st.expander("👁️ Click to View Deep Information (5-Yr Chart & US Tech Picks)"):
         st.markdown("#### 📈 Past 5-Year Comparative Performance Chart")
-        sim_us_data = pd.DataFrame({'Tech Titans Portfolio':, 'S&P Tech Benchmark': [100, 110, 120, 130, 145, 160]}, index=['2021', '2022', '2023', '2024', '2025', '2026'])
+        sim_us_data = pd.DataFrame({
+            'Tech Titans Portfolio':, 
+            'S&P Tech Benchmark': [100, 108, 120, 135, 150, 160]
+        }, index=['2021', '2022', '2023', '2024', '2025', '2026'])
         st.line_chart(sim_us_data)
         
         st.markdown("#### 📊 Strategy Outperformance Sheet Metrics")
@@ -117,13 +121,10 @@ us_ppe_buy, us_ppe_avoid = us_pp_etf.tabs(["🚀 Top 5 US ETFs", "⚠️ Top 10 
 for i in range(5): us_ppe_buy.success(f"📈 **{us_etf_profit[i]}** | 🟢 Buy Zone")
 for i in range(10): us_ppe_avoid.error(f"❌ **{us_etf_loss[i]}** | 🔴 Exit Zone")
 
-# --- COLUMN 4: 🔍 BROKER-STYLE SEARCH ENGINE (Fixed with clear Hint box guides) ---
+# --- COLUMN 4: 🔍 BROKER-STYLE SEARCH ENGINE ---
 with tab_search:
     st.header("🔍 Broker-Style Universal Search Engine")
-    st.info("💡 **IMPROVED HINT:** Search bar me poora naam mat likhein! Sirf 'Ticker Symbol / Code' type karein.\n\n"
-             "• **NSE (India) ke liye:** RELIANCE.NS, TCS.NS, SUZLON.NS\n\n"
-             "• **BSE (India ペニーストック) ke liye:** TAPARIA.BO, RPOWER.BO\n\n"
-             "• **US Market ke liye:** AAPL, NVDA, VOO")
+    st.info("💡 **IMPROVED HINT:** Search bar me poora naam mat likhein! Sirf 'Ticker Symbol / Code' type karein.\n\n• **NSE (India) ke liye:** RELIANCE.NS, TCS.NS, SUZLON.NS\n\n• **BSE (India) ke liye:** TAPARIA.BO, RPOWER.BO\n\n• **US Market ke liye:** AAPL, NVDA, VOO")
 
     user_search = st.text_input("Enter Ticker Code (स्टॉक का सिंबल कोड लिखकर कीबोर्ड का Enter दबाएं):", value="RELIANCE.NS").strip().upper()
 
@@ -154,3 +155,4 @@ with tab_search:
                     st.subheader("🚦 Entry-Exit Pricing Multipliers")
                     c1, c2, c3 = st.columns(3)
                     c1.metric(label="🟢 AI Entry Price", value=f"{currency}{buying_price:.2f}")
+                    c2.metric(label="🎯 AI Exit Target", value=f"{currency}{exit_price:.2f}")
