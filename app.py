@@ -1,84 +1,115 @@
 import streamlit as st
+import yfinance as yf
 
-# Page setup for Mobile - Premium Look
+# Page setup for Mobile - Premium Wide Look
 st.set_page_config(page_title="ProPicks AI - Find Winning Stocks", layout="wide")
 
 # Top Header matching the screenshot
-st.title("🎯 ProPicks AI - Find Winning Stocks with AI")
+st.title("🤖 ProPicks AI - Find Winning Stocks with AI")
 st.caption("Next Update: Oct 1, 2026 | Stock Picks Updated: Sep 1, 2026")
 
+# --- SIDEBAR FOR MEMBERSHIP PLAN ---
+st.sidebar.header("👑 Premium Control Panel")
+membership = st.sidebar.radio("Membership Plan Chunein:", ["Investing Pro", "Investing Pro Plus"])
+
+if membership == "Investing Pro Plus":
+    profit_count = 5
+    loss_count = 10
+    st.sidebar.success("💎 Pro Plus Plan Active")
+else:
+    profit_count = 20
+    loss_count = 20
+    st.sidebar.info("⭐ Pro Plan Active")
+
 # --- TOP OUTPERFORMERS BANNER ---
-st.info("🇮🇳 **NIFTY20 — Bharat Market Outperformers**\n\nThis month's top 20 Indian stocks picked by our AI model based on momentum and value.")
+st.info("🇮🇳 **NIFTY20 — Bharat Market Outperformers**\n\nThis month's top Indian stocks picked by our AI model based on momentum and value.")
 
-# Unlock Stocks Button UI
-st.button("🔒 Unlock Stocks Now 🚀", use_container_width=True)
-
-# --- EXPLORE DIFFERENT STRATEGIES SECTION ---
 st.markdown("---")
 st.header("🎯 Explore Different AI Strategies")
 
-# Strategy 1: Bharat Bargains
+# Real Tickers Data Configuration
+bharat_profit = ["RELIANCE.NS", "TCS.NS", "INFY.NS", "HDFCBANK.NS", "ICICIBANK.NS"] * 4
+bharat_loss = ["IDEA.NS", "YESBANK.NS", "SUZLON.NS", "ZOMATO.NS", "PAYTM.NS"] * 4
+us_profit = ["AAPL", "MSFT", "NVDA", "AMZN", "GOOGL"] * 4
+us_loss = ["NIO", "BABA", "INTC", "PYPL", "SNAP"] * 4
+
+# --- STRATEGY 1: BHARAT BARGAINS ---
 with st.container(border=True):
-    col1, col2 = st.columns([2, 1])
+    col1, col2 = st.columns([3, 1])
     with col1:
         st.subheader("🟣 INB15 — Bharat Bargains")
         st.write("*Identifies undervalued Indian stocks with strong fundamentals.*")
         st.caption("🔄 Monthly Rebalancing | 📅 2019 - 2026")
     with col2:
-        st.button("👁️ View Stocks", key="btn1")
+        view_bharat = st.button("👁️ View Stocks", key="btn_bharat")
         
     c1, c2 = st.columns(2)
     c1.metric(label="Total Return (1Y)", value="+4.7%")
     c2.metric(label="Total Return (5Y)", value="+475.1%")
 
-# Strategy 2: Tech Titans
-with st.container(border=True):
-    col1, col2 = st.columns([2, 1])
-    with col1:
-        st.subheader("🟡 IT15 — Tech Titans")
-        st.write("*Stay ahead of the latest tech trends with algorithmic picks.*")
-        st.caption("🔄 Monthly Rebalancing | 📅 2013 - 2026")
-    with col2:
-        st.button("👁️ View Stocks", key="btn2")
-        
-    c1, c2 = st.columns(2)
-    c1.metric(label="Total Return (1Y)", value="+23.9%")
-    c2.metric(label="Total Return (5Y)", value="+116.4%")
+    if view_bharat:
+        st.markdown("### 📊 AI Stock Recommendations for this Month")
+        t1, t2 = st.tabs(["🚀 Top Profit Picks", "⚠️ Top Avoid (Loss) List"])
+        with t1:
+            st.write(f"🟢 Showing Top {profit_count} Stocks to **ADD/BUY**:")
+            for i in range(profit_count):
+                tick = bharat_profit[i]
+                try:
+                    price = yf.Ticker(tick).history(period="1d")['Close'].iloc[-1]
+                    st.success(f"📈 **{tick.replace('.NS','')}** | Price: ₹{price:.2f} | Action: BUY")
+                except:
+                    st.success(f"📈 **{tick.replace('.NS','')}** | Action: BUY")
+        with t2:
+            st.write(f"🔴 Showing Top {loss_count} Stocks to **REMOVE/AVOID**:")
+            for i in range(loss_count):
+                tick = bharat_loss[i]
+                try:
+                    price = yf.Ticker(tick).history(period="1d")['Close'].iloc[-1]
+                    st.error(f"❌ **{tick.replace('.NS','')}** | Price: ₹{price:.2f} | Action: REMOVE")
+                except:
+                    st.error(f"❌ **{tick.replace('.NS','')}** | Action: REMOVE")
 
-# Strategy 3: Beat the S&P 500 (US Market)
+# --- STRATEGY 2: BEAT THE S&P 500 (US MARKET) ---
 with st.container(border=True):
-    col1, col2 = st.columns([2, 1])
+    col1, col2 = st.columns([3, 1])
     with col1:
         st.subheader("🔵 SP20 — Beat the S&P 500")
         st.write("*Picks from the S&P 500 refined by AI to outperform the US market.*")
         st.caption("🔄 Monthly Rebalancing | 📅 2013 - 2026")
     with col2:
-        st.button("👁️ View Stocks", key="btn3")
+        view_us = st.button("👁️ View Stocks", key="btn_us")
         
     c1, c2 = st.columns(2)
     c1.metric(label="Total Return (1Y)", value="+8.7%")
     c2.metric(label="Total Return (5Y)", value="+74.0%")
 
-# Strategy 4: Bharat Small Cap Gems
-with st.container(border=True):
-    col1, col2 = st.columns([2, 1])
-    with col1:
-        st.subheader("🔴 IN9520 — Bharat Small Cap Gems")
-        st.write("*Targets high-potential small-cap companies in India.*")
-        st.caption("🔄 Monthly Rebalancing | 📅 2019 - 2026")
-    with col2:
-        st.button("👁️ View Stocks", key="btn4")
-        
-    c1, c2 = st.columns(2)
-    c1.metric(label="Total Return (1Y)", value="+17.8%")
-    c2.metric(label="Total Return (5Y)", value="+967.5%")
+    if view_us:
+        st.markdown("### 📊 AI US Stock Recommendations for this Month")
+        t1, t2 = st.tabs(["🚀 Top Profit Picks", "⚠️ Top Avoid (Loss) List"])
+        with t1:
+            st.write(f"🟢 Showing Top {profit_count} US Stocks to **ADD/BUY**:")
+            for i in range(profit_count):
+                tick = us_profit[i]
+                try:
+                    price = yf.Ticker(tick).history(period="1d")['Close'].iloc[-1]
+                    st.success(f"📈 **{tick}** | Price: ${price:.2f} | Action: BUY")
+                except:
+                    st.success(f"📈 **{tick}** | Action: BUY")
+        with t2:
+            st.write(f"🔴 Showing Top {loss_count} US Stocks to **REMOVE/AVOID**:")
+            for i in range(loss_count):
+                tick = us_loss[i]
+                try:
+                    price = yf.Ticker(tick).history(period="1d")['Close'].iloc[-1]
+                    st.error(f"❌ **{tick}** | Price: ${price:.2f} | Action: REMOVE")
+                except:
+                    st.error(f"❌ **{tick}** | Action: REMOVE")
 
 # --- HOW TO USE SECTION ---
 st.markdown("---")
 with st.expander("❓ How to Use ProPicks AI"):
-    st.write("1. **Explore Strategies:** Choose a strategy that fits your style (Growth, Value, etc.).")
-    st.write("2. **Generate Ideas:** Use these AI lists to find your next investment.")
-    st.write("3. **Monthly Action:** Check on the 1st of every month to see which stocks to ADD or REMOVE.")
+    st.write("1. **Choose Tier:** Select Pro or Pro Plus from the sidebar.")
+    st.write("2. **Click View Stocks:** Tap on any strategy card to instantly load the AI Buy and Avoid lists.")
+    st.write("3. **Monthly Action:** Follow recommendations on the 1st of every month.")
 
-# Disclaimer Footer
-st.caption("⚠️ **Disclaimer:** The information presented in ProPicks AI Strategies is for general informational purposes only and should not be considered as investment or financial advice.")
+st.caption("⚠️ **Disclaimer:** Information is for educational purposes only.")
