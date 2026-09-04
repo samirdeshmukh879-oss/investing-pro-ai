@@ -10,11 +10,12 @@ current_month = datetime.date.today().strftime('%B %Y')
 st.title("🤖 ProPicks AI — Advanced Market Terminal")
 st.caption(f"🗓️ Monthly Dashboard: **{current_month}** | Fully Automated AI Layout")
 
-# 5 MAIN COLUMNS (TABS) FROM BEGINNING TO NOW REQUIREMENTS
-tab_propicks, tab_indian, tab_us, tab_search, tab_news = st.tabs([
+# 6 MAIN COLUMNS (TABS) - COMMODITIES DASHBOARD ADDED AS A SEPARATE TAB
+tab_propicks, tab_indian, tab_us, tab_commodities, tab_search, tab_news = st.tabs([
     "🎯 ProPicks AI Dashboard", 
     "🇮🇳 Indian Lists", 
     "🇺🇸 US Lists", 
+    "🛢️ Commodities Dashboard",  # Naya Alag Dedicated Dashboard
     "🔍 Broker-Style Search", 
     "🔥 Live Impact News"
 ])
@@ -46,73 +47,40 @@ col_idx2.metric(label="AI NIFTY20 Portfolio Return (5Y)", value="+1,100.1%")
 
 tab_propicks.markdown("---")
 tab_propicks.subheader("🎯 Active Investment Strategies")
-
-# Card 1: Bharat Bargains
 with tab_propicks.container(border=True):
     st.subheader("🟣 INB15 — Bharat Bargains")
     st.write("*Identifies undervalued Indian stocks with strong fundamentals.*")
     st.metric(label="Total Return (5Y)", value="+475.1%")
-    
     with st.expander("👁️ Click to View Deep Information (5-Yr Charts & AI Picks)"):
         st.markdown("#### 📈 Past 5-Year Outperformance Graph (AI vs Index)")
-        
-        # 🌟 FIXX: Variable names updated to force refresh browser data
-        nifty_growth = [100, 112, 110, 145, 170, 218]
-        ai_growth = [100, 145, 190, 310, 420, 575]
-        
-        final_chart_df = pd.DataFrame({
-            'Nifty Benchmark Index': nifty_growth,
-            'AI Bharat Bargains Portfolio': ai_growth
-        }, index=['2021', '2022', '2023', '2024', '2025', '2026'])
-        
-        st.line_chart(final_chart_df)
-        
-        st.markdown("#### 📊 Strategy Return Comparison Sheet")
+        chart_df = pd.DataFrame({'Nifty Index (Benchmark)':, 'Bharat Bargains (AI Picked)': [100, 140, 220, 310, 450, 575]}, index=['2021', '2022', '2023', '2024', '2025', '2026'])
+        st.line_chart(chart_df)
         m1, m2 = st.columns(2)
         m1.metric(label="Nifty Index Return (5Y)", value="+118.8%")
         m2.metric(label="AI Strategy Total Return (5Y)", value="+475.1%", delta="🚀 +356.3% Alpha")
-        
-        st.markdown("#### 📋 AI Monthly Curated Picks for Bharat Bargains")
         for i in range(5): st.success(f"🚀 AI Picked Stock #{i+1}: **{bharat_profit[i]}** | Target Active")
 
-# Card 2: Tech Titans
 with tab_propicks.container(border=True):
     st.subheader("🟡 IT15 — Tech Titans")
     st.write("*Algorithmic tech trend picks for global dominance.*")
     st.metric(label="Total Return (5Y)", value="+116.4%")
-    
     with st.expander("👁️ Click to View Deep Information (5-Yr Charts & US Tech Picks)"):
         st.markdown("#### 📈 Past 5-Year Outperformance Graph (AI vs Tech Index)")
-        
-        tech_growth = [100, 105, 115, 125, 140, 160]
-        ai_tech_growth = [100, 120, 145, 170, 195, 216]
-        
-        final_chart_us_df = pd.DataFrame({
-            'Tech Index Benchmark': tech_growth,
-            'AI Tech Titans Portfolio': ai_tech_growth
-        }, index=['2021', '2022', '2023', '2024', '2025', '2026'])
-        
-        st.line_chart(final_chart_us_df)
-        
-        st.markdown("#### 📊 Strategy Return Comparison Sheet")
+        chart_us_df = pd.DataFrame({'S&P Tech Index (Benchmark)':, 'Tech Titans (AI Picked)': [100, 125, 155, 175, 195, 216]}, index=['2021', '2022', '2023', '2024', '2025', '2026'])
+        st.line_chart(chart_us_df)
         mu1, mu2 = st.columns(2)
         mu1.metric(label="Tech Benchmark Return (5Y)", value="+60.0%")
         mu2.metric(label="AI Tech Strategy Return (5Y)", value="+116.4%", delta="🚀 +56.4% Alpha")
-        
-        st.markdown("#### 📋 AI Monthly Curated Picks for Tech Titans")
         for i in range(5): st.success(f"🚀 AI Picked Global Tech: **{us_profit[i]}** | Momentum Active")
 
 # --- COLUMN 2: INDIAN MARKET LISTS ---
 tab_indian.header("🇮🇳 Indian Market Tier Lists")
 ind_pro_stk, ind_pro_etf, ind_pp_stk, ind_pp_etf = tab_indian.tabs(["⭐ Pro Stocks (20)", "⭐ Pro ETFs (10)", "💎 Pro Plus Stocks", "💎 Pro Plus ETFs"])
-
 for i in range(20): ind_pro_stk.success(f"📈 **{bharat_profit[i]}** | 🟢 Entry: ₹{buy_prices_ind[i]:,.2f}")
 for i in range(10): ind_pro_etf.success(f"📈 **{ind_etf_profit[i]}** | 🟢 Entry: Buy Active")
-
 ind_pp_buy, ind_pp_avoid = ind_pp_stk.tabs(["🚀 Top 5 Profit Picks", "⚠️ Top 10 Avoid List"])
 for i in range(5): ind_pp_buy.success(f"📈 **{bharat_profit[i]}** | 🟢 Entry: ₹{buy_prices_ind[i]:,.2f}")
 for i in range(10): ind_pp_avoid.error(f"❌ **{bharat_loss[i]}** | 🔴 Exit Price: ₹{exit_prices_ind[i]:,.2f}")
-
 ind_ppe_buy, ind_ppe_avoid = ind_pp_etf.tabs(["🚀 Top 5 ETFs", "⚠️ Top 10 Avoid ETFs"])
 for i in range(5): ind_ppe_buy.success(f"📈 **{ind_etf_profit[i]}** | 🟢 Buy Zone")
 for i in range(10): ind_ppe_avoid.error(f"❌ **{ind_etf_loss[i]}** | 🔴 Exit Zone")
@@ -120,51 +88,65 @@ for i in range(10): ind_ppe_avoid.error(f"❌ **{ind_etf_loss[i]}** | 🔴 Exit 
 # --- COLUMN 3: US MARKET LISTS ---
 tab_us.header("🇺🇸 US Market Tier Lists")
 us_pro_stk, us_pro_etf, us_pp_stk, us_pp_etf = tab_us.tabs(["⭐ Pro US Stocks (20)", "⭐ Pro US ETFs (10)", "💎 Pro Plus US Stocks", "💎 Pro Plus US ETFs"])
-
 for i in range(20): us_pro_stk.success(f"📈 **{us_profit[i]}** | 🟢 Entry: ${buy_prices_us[i]:,.2f}")
 for i in range(10): us_pro_etf.success(f"📈 **{us_etf_profit[i]}** | 🟢 Entry: Buy Active")
-
 us_pp_buy, us_pp_avoid = us_pp_stk.tabs(["🚀 Top 5 US Picks", "⚠️ Top 10 Avoid List"])
 for i in range(5): us_pp_buy.success(f"📈 **{us_profit[i]}** | 🟢 Entry: ${buy_prices_us[i]:,.2f}")
 for i in range(10): us_pp_avoid.error(f"❌ **{us_loss[i]}** | 🔴 Exit Price: ${exit_prices_us[i]:,.2f}")
-
 us_ppe_buy, us_ppe_avoid = us_pp_etf.tabs(["🚀 Top 5 US ETFs", "⚠️ Top 10 Avoid ETFs"])
 for i in range(5): us_ppe_buy.success(f"📈 **{us_etf_profit[i]}** | 🟢 Buy Zone")
 for i in range(10): us_ppe_avoid.error(f"❌ **{us_etf_loss[i]}** | 🔴 Exit Zone")
 
-# --- COLUMN 4: 🔍 BROKER-STYLE SEARCH ENGINE ---
+# --- NEW COLUMN 4: 🛢️ LIVE COMMODITIES DASHBOARD (Dedicated Screen) ---
+tab_commodities.header("🛢️ Global Commodities Live Dashboard")
+tab_commodities.caption("Real-time automated price tickers for Precious Metals, Energy & Base Metals.")
+
+# Commodity Tickers pool (GC=Gold, SI=Silver, CL=Crude Oil, PL=Platinum)
+commodity_tickers = {
+    "🥇 Live Gold Price (सोना)": "GC=F",
+    "🥈 Live Silver Price (चांदी)": "SI=F",
+    "🛢️ Live Crude Oil Price (कच्चा तेल)": "CL=F",
+    "⚙️ Live Platinum Price (प्लैटिनम)": "PL=F"
+}
+
+c_col1, c_col2 = tab_commodities.columns(2)
+cols_list = [c_col1, c_col2]
+
+for index, (label, ticker) in enumerate(commodity_tickers.items()):
+    target_col = cols_list[index % 2]
+    with target_col.container(border=True):
+        st.subheader(label)
+        try:
+            c_asset = yf.Ticker(ticker)
+            c_hist = c_asset.history(period="1d")
+            if not c_hist.empty:
+                c_price = c_hist['Close'].iloc[-1]
+                st.metric(label="Current Value (Global Spot Price)", value=f"${c_price:,.2f}")
+            else:
+                st.caption("🔄 Data streaming...")
+        except:
+            st.caption("🔄 Fetching live updates...")
+
+# --- COLUMN 5: 🔍 BROKER-STYLE SEARCH ENGINE ---
 with tab_search:
     st.header("🔍 Broker-Style Universal Search Engine")
     st.info("💡 **HINT:** Indian stocks ke liye `.NS` (NSE) ya `.BO` (BSE) jodein. Jaise: `TAPARIA.BO`, `SUZLON.NS` या US market ke liye `AAPL`, `NVDA` likhein.")
-
     user_search = st.text_input("Enter Ticker Code (स्टॉक का सिंबल कोड लिखकर कीबोर्ड का Enter दबाएं):", value="RELIANCE.NS").strip().upper()
-
     if user_search:
         asset = yf.Ticker(user_search)
         hist_data = asset.history(period="5y")
-        
         if not hist_data.empty:
             current_price = hist_data['Close'].iloc[-1]
             currency = "$" if "." not in user_search else "₹"
             buying_price = current_price * 0.98
             exit_price = current_price * 1.12
             stop_loss = current_price * 0.95
-            
             st.success(f"🏢 **Selected Asset Ticker:** {user_search}")
             if "IDEA" in user_search or "YESBANK" in user_search or "SUZLON" in user_search or "NIO" in user_search:
                 st.error("🚨 **REMOVE CRITICAL ALERT:** AI trend index detects continuous weakness. Exit immediately!")
             else:
                 st.warning(f"⚠️ **Monthly AI Rebalance View:** Suggested Buying: {currency}{buying_price:.2f} | Target: {currency}{exit_price:.2f}")
-
             c1, c2, c3 = st.columns(3)
             c1.metric(label="🟢 AI Entry Price", value=f"{currency}{buying_price:.2f}")
             c2.metric(label="🎯 AI Exit Target", value=f"{currency}{exit_price:.2f}")
             c3.metric(label="🛑 Risk Stop Loss", value=f"{currency}{stop_loss:.2f}")
-            st.info(f"💡 **Live Market Rate:** Currently trading at {currency}{current_price:.2f}")
-            st.line_chart(hist_data['Close'])
-        else:
-            st.error("Exchange Registry Stream is empty. Suffix code lagana mat bhooliye (e.g. .NS or .BO).")
-
-# --- COLUMN 5: 🔥 LIVE IMPACT NEWS ---
-tab_news.subheader("🔔 First-Alert: Market Moving News Notifications")
-tab_news.error("🚨 **BREAKING: US Federal Reserve hints at interest rate relief bets following Waller comments**")
