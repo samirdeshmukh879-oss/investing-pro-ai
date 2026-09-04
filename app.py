@@ -14,11 +14,11 @@ st.info("🇮🇳 **NIFTY20 — Bharat Market Outperformers**\n\nThis month's to
 # Unlock Stocks Button UI
 st.button("🔒 Unlock Stocks Now 🚀", use_container_width=True)
 
-# Graph section simulation (Historical Performance)
+# Graph section simulation (Historical Performance - Fixed Data)
 st.subheader("📈 Simulated Past Performance (Nifty20 vs Nifty 50)")
 chart_data = pd.DataFrame({
     'Nifty20 (AI Picked)':,
-    'Nifty 50 (Benchmark)': [100, 110, 112, 115, 117, 118]
+    'Nifty 50 (Benchmark)': [100, 120, 140, 180, 200, 218]
 }, index=['2020', '2022', '2023', '2024', '2025', '2026'])
 st.line_chart(chart_data)
 
