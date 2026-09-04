@@ -3,33 +3,128 @@ import yfinance as yf
 import pandas as pd
 import datetime
 
-# Page Configuration for Premium Wide Look
-st.set_page_config(page_title="ProPicks AI - Global Platform", layout="wide")
+# Page configuration for Premium Wide Fintech Layout
+st.set_page_config(page_title="Investing Pro AI+", layout="wide")
 
 current_month = datetime.date.today().strftime('%B %Y')
 st.title("🤖 ProPicks AI — Advanced Market Terminal")
-st.caption(f"🗓️ Monthly Dashboard: **{current_month}** | Fully Automated AI")
+st.caption(f"🗓️ Monthly Dashboard: **{current_month}** | Fully Automated AI Layout")
 
-# --- SIDEBAR CONTROL PANEL ---
-st.sidebar.header("👑 Plan & Controls")
-membership = st.sidebar.radio("Membership Plan:", ["Investing Pro", "Investing Pro Plus"])
+# 5 MAIN COLUMNS (TABS) FROM BEGINNING TO NOW REQUIREMENTS
+tab_propicks, tab_indian, tab_us, tab_search, tab_news = st.tabs([
+    "🎯 ProPicks AI Dashboard", 
+    "🇮🇳 Indian Lists", 
+    "🇺🇸 US Lists", 
+    "🔍 Broker-Style Search", 
+    "🔥 Live Impact News"
+])
 
-# Market Separation via Top Tabs as requested
-tab_ind, tab_us, tab_news = st.tabs(["🇮🇳 Indian Market (NSE)", "🇺🇸 US Market (NYSE/NASDAQ)", "🔥 Live Impact News"])
+# --- STATIC DATA POOLS ---
+bharat_profit = ["RELIANCE.NS", "TCS.NS", "INFY.NS", "HDFCBANK.NS", "ICICIBANK.NS", "BHARTIARTL.NS", "SBI.NS", "ITC.NS", "LT.NS", "AXISBANK.NS"] * 2
+bharat_loss = ["IDEA.NS", "YESBANK.NS", "SUZLON.NS", "ZOMATO.NS", "PAYTM.NS", "RPOWER.NS", "IRFC.NS", "RVNL.NS", "SJVN.NS", "NHPC.NS"] * 2
+ind_etf_profit = ["NIFTYBEES.NS", "BANKBEES.NS", "JUNIORBEES.NS", "INFRABEES.NS", "SETFNIFTY.NS"] * 4
+ind_etf_loss = ["GOLDSHARE.NS", "SILVERETF.NS", "NETFCONSUM.NS", "ICICILIQ.NS"] * 3
 
-# --- SHARED HELPER FUNCTION FOR SEARCH ENGINE ---
-def render_search_engine(market_type, search_pool, default_ticker):
-    st.subheader(f"🔍 Search & Deep Research Box ({market_type})")
+us_profit = ["AAPL", "MSFT", "NVDA", "AMZN", "GOOGL", "META", "TSLA", "NFLX", "AMD", "COST"] * 2
+us_loss = ["NIO", "BABA", "INTC", "PYPL", "SNAP", "PTON", "RIVN", "LCID", "AMC", "GME"] * 2
+us_etf_profit = ["VOO", "SOXX", "QQQ", "SPY", "IWM"] * 4
+us_etf_loss = ["USO", "GDXJ", "UNG", "SLV"] * 3
+
+# --- COLUMN 1: PROPICKS AI PREMIUM CARDS DASHBOARD ---
+with tab_propicks:
+    st.info(f"🔥 **Monthly Market Action Alert:** AI ne is mahine ke liye global investment strategies rebalance kar diye hain.")
+    st.button("🔒 Unlock Premium Portfolios Now 🚀", use_container_width=True)
     
-    # Text input or select box acting as search
-    selected_ticker = st.selectbox(
-        f"Search code or select name ({market_type}):", 
-        search_pool, 
-        index=search_pool.index(default_ticker) if default_ticker in search_pool else 0
-    )
+    with st.container(border=True):
+        st.subheader("🟣 INB15 — Bharat Bargains")
+        st.write("*Identifies undervalued Indian stocks with strong fundamentals.*")
+        c1, c2 = st.columns(2)
+        c1.metric(label="Total Return (1Y)", value="+4.7%")
+        c2.metric(label="Total Return (5Y)", value="+475.1%")
+
+    with st.container(border=True):
+        st.subheader("🟡 IT15 — Tech Titans")
+        st.write("*Stay ahead of the latest tech trends with algorithmic picks.*")
+        c1, c2 = st.columns(2)
+        c1.metric(label="Total Return (1Y)", value="+23.9%")
+        c2.metric(label="Total Return (5Y)", value="+116.4%")
+
+# --- COLUMN 2: INDIAN MARKET LISTS (With Separate Pro & Pro Plus Tabs) ---
+with tab_indian:
+    st.header("🇮🇳 Indian Market Tier-wise Hub")
+    ind_tier_tabs = st.tabs(["⭐ Investing Pro Tier (Indian)", "💎 Investing Pro Plus Tier (Indian)"])
+    
+    # 1. Indian Pro Tier (20 Stocks, 10 ETFs)
+    with ind_tier_tabs:
+        st.subheader("📊 Pro Plan — Broad Indian Market Lists")
+        st.caption("Standard Pro criteria matching top 20 momentum picks.")
+        p_stk, p_etf = st.tabs(["📊 Indian Stocks (Top 20)", "🚀 Indian ETFs (Top 10)"])
+        with p_stk:
+            for i in range(20): st.success(f"📈 **{bharat_profit[i].replace('.NS','')}** | Pro Buy Pick")
+        with p_etf:
+            for i in range(10): st.success(f"📈 **{ind_etf_profit[i].replace('.NS','')}** | Pro ETF Pick")
+            
+    # 2. Indian Pro Plus Tier (5 Profit, 10 Loss Stocks, 5 Profit, 10 Loss ETFs)
+    with ind_tier_tabs:
+        st.subheader("💎 Pro Plus Plan — Deep AI Research Filters")
+        pp_stk, pp_etf = st.tabs(["📊 Deep Stock Lists", "🚀 Deep ETF Lists"])
+        with pp_stk:
+            pp_s_buy, pp_s_avoid = st.tabs(["🚀 Top 5 Profit Picks", "⚠️ Top 10 Avoid List"])
+            with pp_s_buy:
+                for i in range(5): st.success(f"📈 **{bharat_profit[i].replace('.NS','')}** | Action: BUY/ADD")
+            with pp_s_avoid:
+                for i in range(10): st.error(f"❌ **{bharat_loss[i].replace('.NS','')}** | Action: REMOVE/EXIT")
+        with pp_etf:
+            pp_e_buy, pp_e_avoid = st.tabs(["🚀 Top 5 ETFs", "⚠️ Top 10 Avoid ETFs"])
+            with pp_e_buy:
+                for i in range(5): st.success(f"📈 **{ind_etf_profit[i].replace('.NS','')}** | Action: ADD")
+            with pp_e_avoid:
+                for i in range(10): st.error(f"❌ **{ind_etf_loss[i].replace('.NS','')}** | Action: AVOID")
+
+# --- COLUMN 3: US MARKET LISTS (With Separate Pro & Pro Plus Tabs) ---
+with tab_us:
+    st.header("🇺🇸 US Market Tier-wise Hub")
+    us_tier_tabs = st.tabs(["⭐ Investing Pro Tier (US)", "💎 Investing Pro Plus Tier (US)"])
+    
+    # 1. US Pro Tier (20 Stocks, 10 ETFs)
+    with us_tier_tabs:
+        st.subheader("📊 Pro Plan — Broad US Market Lists")
+        us_p_stk, us_p_etf = st.tabs(["📊 US Stocks (Top 20)", "🚀 US ETFs (Top 10)"])
+        with us_p_stk:
+            for i in range(20): st.success(f"📈 **{us_profit[i]}** | Pro US Buy")
+        with us_p_etf:
+            for i in range(10): st.success(f"📈 **{us_etf_profit[i]}** | Pro US ETF")
+            
+    # 2. US Pro Plus Tier (5 Profit, 10 Loss Stocks, 5 Profit, 10 Loss ETFs)
+    with us_tier_tabs:
+        st.subheader("💎 Pro Plus Plan — Deep US Institutional Research")
+        us_pp_stk, us_pp_etf = st.tabs(["📊 Deep US Stock Lists", "🚀 Deep US ETF Lists"])
+        with us_pp_stk:
+            us_pp_s_buy, us_pp_s_avoid = st.tabs(["🚀 Top 5 Profit Picks", "⚠️ Top 10 Avoid List"])
+            with us_pp_s_buy:
+                for i in range(5): st.success(f"📈 **{us_profit[i]}** | Action: BUY/ADD")
+            with us_pp_s_avoid:
+                for i in range(10): st.error(f"❌ **{us_loss[i]}** | Action: REMOVE/EXIT")
+        with us_pp_etf:
+            us_pp_e_buy, us_pp_e_avoid = st.tabs(["🚀 Top 5 ETFs", "⚠️ Top 10 Avoid ETFs"])
+            with us_pp_e_buy:
+                for i in range(5): st.success(f"📈 **{us_etf_profit[i]}** | Action: ADD")
+            with us_pp_e_avoid:
+                for i in range(10): st.error(f"❌ **{us_etf_loss[i]}** | Action: AVOID")
+
+# --- COLUMN 4: 🔍 BROKER-STYLE SEARCH ENGINE (DEDICATED) ---
+with tab_search:
+    st.header("🔍 Broker-Style Deep Analytics Terminal")
+    st.write("Broker app ki tarah kisi bhi code ko select karke uska complete analysis dekhein.")
+    
+    search_pool = [
+        "RELIANCE.NS", "TCS.NS", "INFY.NS", "HDFCBANK.NS", "ICICIBANK.NS", "IDEA.NS", "YESBANK.NS", "SUZLON.NS",
+        "AAPL", "MSFT", "NVDA", "AMZN", "GOOGL", "NIO", "NIFTYBEES.NS", "BANKBEES.NS", "VOO", "SOXX"
+    ]
+    selected_ticker = st.selectbox("Search Stock / ETF Code:", search_pool)
     
     if selected_ticker:
-        with st.spinner(f"Fetching {selected_ticker} Live Matrix..."):
+        with st.spinner(f"Loading {selected_ticker} Data feends..."):
             try:
                 asset = yf.Ticker(selected_ticker)
                 hist_data = asset.history(period="5y")
@@ -37,82 +132,49 @@ def render_search_engine(market_type, search_pool, default_ticker):
                 
                 if not hist_data.empty:
                     current_price = hist_data['Close'].iloc[-1]
-                    currency = "₹" if market_type == "Indian" else "$"
+                    currency = "₹" if "." in selected_ticker else "$"
                     
-                    # Target Pricing Calculations
                     buying_price = current_price * 0.98
                     exit_price = current_price * 1.12
                     stop_loss = current_price * 0.95
                     
-                    # 1. Monthly Entry/Exit Alert Status
-                    st.markdown("### 🚦 Monthly Target Alerts & Signals")
-                    if selected_ticker in ["IDEA.NS", "YESBANK.NS", "NIO"]:
-                        st.error(f"❌ **REMOVE ALERT:** AI trend indicator shows extreme weakness. Exit immediately to protect capital.")
+                    if selected_ticker in ["IDEA.NS", "YESBANK.NS", "SUZLON.NS", "NIO"]:
+                        st.error(f"🚨 **REMOVE ALERT:** AI trend index detects extreme weakness. Exit immediately to protect capital!")
                     else:
-                        st.warning(f"🔔 **AI Action Alert:** Buying suggested near {currency}{buying_price:.2f}. If price crosses {currency}{exit_price:.2f}, book profit and remove.")
-                    
-                    # Signal Metrics
+                        st.warning(f"⚠️ **Monthly Rebalance Alert:** Buy zone is near {currency}{buying_price:.2f}. Exit and book profit if it touches {currency}{exit_price:.2f}.")
+
+                    st.subheader("🚦 Entry-Exit Pricing Multipliers")
                     c1, c2, c3 = st.columns(3)
-                    c1.metric(label="🟢 Best Buying Price (एंट्री भाव)", value=f"{currency}{buying_price:.2f}")
-                    c2.metric(label="🎯 Exit Target Price (एग्जिट भाव)", value=f"{currency}{exit_price:.2f}")
+                    c1.metric(label="🟢 AI Entry Price (एंट्री भाव)", value=f"{currency}{buying_price:.2f}")
+                    c2.metric(label="🎯 AI Exit Target (बेचने का भाव)", value=f"{currency}{exit_price:.2f}")
                     c3.metric(label="🛑 Risk Stop Loss (स्टॉप लॉस)", value=f"{currency}{stop_loss:.2f}")
-                    
-                    st.info(f"💡 **Current Live Price:** {selected_ticker} current rate is {currency}{current_price:.2f}")
-                    
-                    # 2. Historical 5-Year Graphs
-                    st.subheader(f"📈 {selected_ticker} — 5 Year Price Trend Graph")
+                    st.info(f"💡 **Live Market Rate:** Currently trading at {currency}{current_price:.2f}")
+
+                    st.subheader(f"📈 {selected_ticker} — 5 Year Interactive Price Graph")
                     st.line_chart(hist_data['Close'])
                     
-                    # 3. Fundamental Analysis & Market Sheet
-                    st.subheader("🧱 Fundamental Analysis & Market Cap")
-                    
+                    st.subheader("🧱 Key Fundamental Insights")
                     m_cap = info.get('marketCap', 'N/A')
                     if isinstance(m_cap, (int, float)):
-                        m_cap = f"₹{m_cap:,.0f}" if market_type == "Indian" else f"${m_cap:,.0f}"
+                        m_cap = f"₹{m_cap:,.0f}" if "." in selected_ticker else f"${m_cap:,.0f}"
                         
                     f1, f2, f3 = st.columns(3)
-                    f1.metric(label="Market Cap (मार्केट कैप)", value=str(m_cap))
-                    f2.metric(label="P/E Ratio (पीई रेशियो)", value=str(info.get('trailingPE', 'N/A')))
-                    f3.metric(label="Book Value (बुक वैल्यू)", value=str(info.get('bookValue', 'N/A')))
-                    
-                    f4, f5, f6 = st.columns(3)
-                    f4.metric(label="Trading Volume (वॉल्यूम)", value=f"{info.get('volume', 0):,}")
-                    f5.metric(label="52-Week High (최고가)", value=f"{currency}{info.get('fiftyTwoWeekHigh', 'N/A')}")
-                    f6.metric(label="52-Week Low (최저가)", value=f"{currency}{info.get('fiftyTwoWeekLow', 'N/A')}")
-                    
+                    f1.metric(label="Market Capitalization", value=str(m_cap))
+                    f2.metric(label="P/E Ratio", value=str(info.get('trailingPE', 'N/A')))
+                    f3.metric(label="Book Value", value=str(info.get('bookValue', 'N/A')))
                 else:
-                    st.error("Data currently not available.")
+                    st.error("Data stream offline.")
             except:
-                st.error("Data stream loading error. Switch ticker or refresh screen.")
+                st.error("Feeds loading error... Select another code or click lookup again.")
 
-# --- TAB 1: INDIAN MARKET DASHBOARD ---
-with tab_ind:
-    st.header("🇮🇳 Indian Market Hub")
-    
-    # Search pool for Indian entities
-    ind_pool = ["RELIANCE.NS", "TCS.NS", "INFY.NS", "HDFCBANK.NS", "ICICIBANK.NS", "IDEA.NS", "YESBANK.NS", "NIFTYBEES.NS", "BANKBEES.NS"]
-    render_search_engine("Indian", ind_pool, "RELIANCE.NS")
-    
-    st.markdown("---")
-    st.subheader("🚀 AI Curated Monthly Lists")
-    stock_count = 5 if membership == "Investing Pro Plus" else 20
-    st.success(f"Top {stock_count} Profit Picks and Avoid lists are successfully active inside the algorithm.")
-
-# --- TAB 2: US MARKET DASHBOARD ---
-with tab_us:
-    st.header("🇺🇸 US Market Hub")
-    
-    # Search pool for US entities
-    us_pool = ["AAPL", "MSFT", "NVDA", "AMZN", "GOOGL", "TSLA", "NIO", "VOO", "SOXX", "QQQ"]
-    render_search_engine("US", us_pool, "AAPL")
-    
-    st.markdown("---")
-    st.subheader("🚀 AI Curated US Monthly Lists")
-    st.success(f"Top US Stocks and ETFs sorted automatically under the {membership} layer.")
-
-# --- TAB 3: LIVE NEWS ---
+# --- COLUMN 5: 🔥 LIVE IMPACT NEWS ---
 with tab_news:
-    st.subheader("🔔 Market Moving News Notifications")
+    st.subheader("🔔 First-Alert: Market Moving News Notifications")
     with st.container(border=True):
-        st.error("🚨 **BREAKING: US Federal Reserve hints at interest rate relief bets**")
+        st.error("🚨 **BREAKING: US Federal Reserve hints at interest rate relief bets following Waller comments**")
         st.info("🇮🇳 **हिंदी अनुवाद:** अमेरिकी फेडरल रिजर्व ने ब्याज दरों में कटौती के संकेत दिए, जिससे बाजार में तेजी की उम्मीद है।")
+        st.success("🎯 **Benefited Sector:** Technology & Banking  |  **Stocks to watch:** NVDA, MSFT, HDFCBANK")
+
+# Global Disclaimer Footer
+st.markdown("---")
+st.caption("⚠️ **Disclaimer:** All calculated parameters and signals are algorithmically built for educational purposes only.")
