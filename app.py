@@ -1,33 +1,97 @@
 import streamlit as st
+import pandas as pd
 
-st.set_page_config(page_title="Investing Pro AI", layout="centered")
-st.title("🎯 Investing Pro & Pro Plus AI")
-st.write("Step 2: App Interface & Tier Structure")
+# Page setup - Wide mode for premium chart view
+st.set_page_config(page_title="ProPicks AI - Find Winning Stocks", layout="wide")
 
-st.sidebar.header("⚙️ App Control Panel")
-membership = st.sidebar.radio("Membership Plan Chunein:", ["Investing Pro", "Investing Pro Plus"])
-market = st.sidebar.selectbox("Market Dashboard:", ["Indian Market (NSE)", "US Market (NYSE/NASDAQ)"])
-asset_type = st.sidebar.selectbox("Asset Class:", ["Stocks (Index-wise)", "ETFs & Mutual Funds"])
+# Top Header matching the screenshot
+st.title("🤖 ProPicks AI - Find Winning Stocks with AI")
+st.caption("Next Update: Oct 1, 2026 | Stock Picks Updated: Sep 1, 2026")
 
-st.warning("🤖 **AI Monthly Action Alert:**\n\n🟢 **ADD:** AI ne is mahine ke liye naye trends dhoond liye hain.\n\n🔴 **REMOVE:** Purane kharab perform karne wale assets ko portfolio se hataen.")
+# --- TOP OUTPERFORMERS BANNER ---
+st.info("🇮🇳 **NIFTY20 — Bharat Market Outperformers**\n\nThis month's top 20 Indian stocks picked by our AI model based on momentum and value.")
 
-st.header(f"📊 {market} - {asset_type}")
+# Unlock Stocks Button UI
+st.button("🔒 Unlock Stocks Now 🚀", use_container_width=True)
 
-if membership == "Investing Pro Plus":
-    st.info("💎 **Pro Plus Active:** Is plan me aapko har Index ke **Top 5 Profit** picks aur **Top 10 Loss (Avoid)** stocks dikhenge.")
-    tab1, tab2 = st.tabs(["🚀 Top 5 Profit Picks", "⚠️ Top 10 Avoid List"])
-    with tab1:
-        st.subheader("🟢 Top 5 Profit Dene Wale Assets")
-        for i in range(1, 6): st.success(f"Asset #{i} - Bullish Trend 📈")
-    with tab2:
-        st.subheader("🔴 Top 10 Loss/Risk Wale Assets (Se Bachein)")
-        for i in range(1, 11): st.error(f"❌ Asset #{i} - Bearish Trend 📉 (AI Suggestion: REMOVE)")
-else:
-    st.info("⭐ **Pro Active:** Is plan me aapko har Index ke **Top 20 Profit** aur **Top 20 Loss (Avoid)** assets dikhenge.")
-    tab1, tab2 = st.tabs(["🚀 Top 20 Profit Picks", "⚠️ Top 20 Avoid List"])
-    with tab1:
-        st.subheader("🟢 Top 20 Profit Dene Wale Assets")
-        for i in range(1, 21): st.success(f"Asset #{i} - Broad Market Pick 📈")
-    with tab2:
-        st.subheader("🔴 Top 20 Loss/Risk Wale Assets")
-        for i in range(1, 21): st.error(f"❌ Asset #{i} - High Risk Alert 📉")
+# Graph section simulation (Historical Performance)
+st.subheader("📈 Simulated Past Performance (Nifty20 vs Nifty 50)")
+chart_data = pd.DataFrame({
+    'Nifty20 (AI Picked)':,
+    'Nifty 50 (Benchmark)': [100, 110, 112, 115, 117, 118]
+}, index=['2020', '2022', '2023', '2024', '2025', '2026'])
+st.line_chart(chart_data)
+
+# --- EXPLORE DIFFERENT STRATEGIES SECTION ---
+st.markdown("---")
+st.header("🎯 Explore Different AI Strategies")
+
+# Tabs for strategy switching like the image buttons
+strat_tabs = st.tabs(["All Strategies", "Popular Only"])
+
+with strat_tabs[0]:
+    # Strategy 1: Bharat Bargains
+    with st.container(border=True):
+        col1, col2 = st.columns([3, 1])
+        with col1:
+            st.subheader("🟣 INB15 — Bharat Bargains")
+            st.write("*Identifies undervalued Indian stocks with strong fundamentals.*")
+            st.caption("🔄 Monthly Rebalancing | 📅 2019 - 2026")
+        with col2:
+            st.button("👁️ View Stocks", key="btn1")
+            
+        c1, c2 = st.columns(2)
+        c1.metric(label="Total Return (1Y)", value="+4.7%")
+        c2.metric(label="Total Return (5Y)", value="+475.1%", delta="Outperforming")
+
+    # Strategy 2: Tech Titans
+    with st.container(border=True):
+        col1, col2 = st.columns([3, 1])
+        with col1:
+            st.subheader("🟡 IT15 — Tech Titans")
+            st.write("*Stay ahead of the latest tech trends with algorithmic picks.*")
+            st.caption("🔄 Monthly Rebalancing | 📅 2013 - 2026")
+        with col2:
+            st.button("👁️ View Stocks", key="btn2")
+            
+        c1, c2 = st.columns(2)
+        c1.metric(label="Total Return (1Y)", value="+23.9%")
+        c2.metric(label="Total Return (5Y)", value="+116.4%")
+
+    # Strategy 3: Beat the S&P 500 (US Market)
+    with st.container(border=True):
+        col1, col2 = st.columns([3, 1])
+        with col1:
+            st.subheader("🔵 SP20 — Beat the S&P 500")
+            st.write("*Picks from the S&P 500 refined by AI to outperform the US market.*")
+            st.caption("🔄 Monthly Rebalancing | 📅 2013 - 2026")
+        with col2:
+            st.button("👁️ View Stocks", key="btn3")
+            
+        c1, c2 = st.columns(2)
+        c1.metric(label="Total Return (1Y)", value="+8.7%")
+        c2.metric(label="Total Return (5Y)", value="+74.0%")
+
+    # Strategy 4: Bharat Small Cap Gems
+    with st.container(border=True):
+        col1, col2 = st.columns([3, 1])
+        with col1:
+            st.subheader("🔴 IN9520 — Bharat Small Cap Gems")
+            st.write("*Targets high-potential small-cap companies in India.*")
+            st.caption("🔄 Monthly Rebalancing | 📅 2019 - 2026")
+        with col2:
+            st.button("👁️ View Stocks", key="btn4")
+            
+        c1, c2 = st.columns(2)
+        c1.metric(label="Total Return (1Y)", value="+17.8%")
+        c2.metric(label="Total Return (5Y)", value="+967.5%")
+
+# --- HOW TO USE SECTION ---
+st.markdown("---")
+with st.expander("❓ How to Use ProPicks AI"):
+    st.write("1. **Explore Strategies:** Choose a strategy that fits your style (Growth, Value, etc.).")
+    st.write("2. **Generate Ideas:** Use these AI lists to find your next investment.")
+    st.write("3. **Monthly Action:** Check on the 1st of every month to see which stocks to ADD or REMOVE.")
+
+# Disclaimer Footer matching the original site
+st.caption("⚠️ **Disclaimer:** The information presented in ProPicks AI Strategies is for general informational purposes only and should not be considered as investment or financial advice.")
