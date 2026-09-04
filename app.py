@@ -35,7 +35,7 @@ exit_prices_ind = [11.20, 22.40, 240.00, 260.00, 380.00, 32.10, 145.00, 210.00, 
 buy_prices_us = [224.50, 412.00, 128.10, 174.30, 162.00, 495.00, 210.00, 620.00, 142.00, 810.00, 160.00, 210.00, 680.00, 220.00, 52.00, 190.00, 450.00, 240.00, 290.00, 780.00]
 exit_prices_us = [8.20, 74.50, 19.10, 38.00, 11.40, 4.20, 12.50, 18.00, 3.10, 16.50] * 2
 
-# --- COLUMN 1: PROPICKS AI PREMIUM CARDS DASHBOARD (FIXED NO-ERROR VERSION) ---
+# --- COLUMN 1: PROPICKS AI PREMIUM CARDS DASHBOARD (With Double Charts Fixed) ---
 tab_propicks.info("🔥 **Monthly Action Banner:** AI global models optimized for high-growth index tracking.")
 tab_propicks.subheader("📊 Benchmark vs AI Strategy Outperformance Sheet")
 col_idx1, col_idx2 = tab_propicks.columns(2)
@@ -53,7 +53,15 @@ with tab_propicks.container(border=True):
     st.write("*Identifies undervalued Indian stocks with strong fundamentals.*")
     st.metric(label="Total Return (5Y)", value="+475.1%")
     
-    with st.expander("👁️ Click to View Deep Information (Index Lists & AI Picks)"):
+    with st.expander("👁️ Click to View Deep Information (5-Yr Charts & AI Picks)"):
+        # 🆕 NEW DYNAMIC DUAL CHART MATRIX
+        st.markdown("#### 📈 Past 5-Year Outperformance Graph (AI vs Index)")
+        chart_df = pd.DataFrame({
+            'Nifty Index (Benchmark)':,
+            'Bharat Bargains (AI Picked)': [100, 160, 240, 350, 480, 575]
+        }, index=['2021', '2022', '2023', '2024', '2025', '2026'])
+        st.line_chart(chart_df)
+        
         st.markdown("#### 📊 Strategy Return Comparison Sheet")
         m1, m2 = st.columns(2)
         m1.metric(label="Nifty Index Return (5Y)", value="+118.8%")
@@ -68,7 +76,14 @@ with tab_propicks.container(border=True):
     st.write("*Algorithmic tech trend picks for global dominance.*")
     st.metric(label="Total Return (5Y)", value="+116.4%")
     
-    with st.expander("👁️ Click to View Deep Information (US Tech Picks)"):
+    with st.expander("👁️ Click to View Deep Information (5-Yr Charts & US Tech Picks)"):
+        st.markdown("#### 📈 Past 5-Year Outperformance Graph (AI vs Tech Index)")
+        chart_us_df = pd.DataFrame({
+            'S&P Tech Index (Benchmark)':,
+            'Tech Titans (AI Picked)': [100, 130, 165, 190, 210, 216]
+        }, index=['2021', '2022', '2023', '2024', '2025', '2026'])
+        st.line_chart(chart_us_df)
+        
         st.markdown("#### 📊 Strategy Return Comparison Sheet")
         mu1, mu2 = st.columns(2)
         mu1.metric(label="Tech Benchmark Return (5Y)", value="+60.0%")
@@ -147,4 +162,3 @@ tab_news.info("🇮🇳 **हिंदी अनुवाद:** अमेरि�
 
 # Global Disclaimer Footer
 st.markdown("---")
-st.caption("⚠️ **Disclaimer:** All calculated parameters and signals are algorithmically built for educational purposes only.")
