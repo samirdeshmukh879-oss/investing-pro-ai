@@ -48,27 +48,20 @@ col_idx2.metric(label="AI NIFTY20 Portfolio Return (5Y)", value="+1,100.1%")
 tab_propicks.markdown("---")
 tab_propicks.subheader("🎯 Active Investment Strategies")
 
-with tab_propicks.container(border=True):
-    st.subheader("🟣 INB15 — Bharat Bargains")
-    st.write("*Identifies undervalued Indian stocks with strong fundamentals.*")
-    st.metric(label="Total Return (5Y)", value="+475.1%")
-    with st.expander("👁️ Click to View Deep Information (Index Lists & AI Picks)"):
-        st.markdown("#### 📊 Strategy Return Comparison Sheet")
-        m1, m2 = st.columns(2)
-        m1.metric(label="Nifty Index Return (5Y)", value="+118.8%")
-        m2.metric(label="AI Strategy Total Return (5Y)", value="+475.1%", delta="🚀 +356.3% Alpha")
-        for i in range(5): st.success(f"🚀 AI Picked Stock #{i+1}: **{bharat_profit[i]}** | Target Active")
+exp1 = tab_propicks.expander("🟣 INB15 — Bharat Bargains (Click to open details & AI Picks)")
+exp1.markdown("#### 📊 Strategy Return Comparison Sheet")
+exp1.write("• Nifty Index Return (5Y): **+118.8%**")
+exp1.write("• AI Strategy Total Return (5Y): **+475.1%**")
+exp1.success(f"🚀 AI Picked Stock: **{bharat_profit[0]}** | Target Active")
+exp1.success(f"🚀 AI Picked Stock: **{bharat_profit[1]}** | Target Active")
+exp1.success(f"🚀 AI Picked Stock: **{bharat_profit[2]}** | Target Active")
 
-with tab_propicks.container(border=True):
-    st.subheader("🟡 IT15 — Tech Titans")
-    st.write("*Algorithmic tech trend picks for global dominance.*")
-    st.metric(label="Total Return (5Y)", value="+116.4%")
-    with st.expander("👁️ Click to View Deep Information (US Tech Picks)"):
-        st.markdown("#### 📊 Strategy Return Comparison Sheet")
-        mu1, mu2 = st.columns(2)
-        mu1.metric(label="Tech Benchmark Return (5Y)", value="+60.0%")
-        mu2.metric(label="AI Tech Strategy Return (5Y)", value="+116.4%", delta="🚀 +56.4% Alpha")
-        for i in range(5): st.success(f"🚀 AI Picked Global Tech: **{us_profit[i]}** | Momentum Active")
+exp2 = tab_propicks.expander("🟡 IT15 — Tech Titans (Click to open details & Global Picks)")
+exp2.markdown("#### 📊 Strategy Return Comparison Sheet")
+exp2.write("• Tech Benchmark Return (5Y): **+60.0%**")
+exp2.write("• AI Tech Strategy Return (5Y): **+116.4%**")
+exp2.success(f"🚀 AI Picked Global Tech: **{us_profit[0]}** | Momentum Active")
+exp2.success(f"🚀 AI Picked Global Tech: **{us_profit[1]}** | Momentum Active")
 
 # --- COLUMN 2: INDIAN MARKET LISTS ---
 tab_indian.header("🇮🇳 Indian Market Tier Lists")
@@ -111,50 +104,55 @@ commodity_tickers = {
 c_col1, c_col2 = tab_commodities.columns(2)
 for index, (label, ticker) in enumerate(commodity_tickers.items()):
     target_col = c_col1 if index % 2 == 0 else c_col2
-    with target_col.container(border=True):
-        st.subheader(label)
-        try:
-            c_price = yf.Ticker(ticker).history(period="1d")['Close'].iloc[-1]
-            st.metric(label="Current Value (Global Spot Price)", value=f"${c_price:,.2f}")
-        except:
-            st.caption("🔄 Fetching live updates...")
+    try:
+        c_price = yf.Ticker(ticker).history(period="1d")['Close'].iloc[-1]
+        target_col.metric(label=label, value=f"${c_price:,.2f}")
+    except:
+        target_col.caption(f"🔄 {label} streaming...")
 
 # --- COLUMN 5: 🔍 BROKER-STYLE SEARCH ENGINE ---
-with tab_search:
-    st.header("🔍 Broker-Style Universal Search Engine")
-    st.info("💡 **HINT:** Indian stocks ke liye `.NS` (NSE) ya `.BO` (BSE) jodein. Jaise: `TAPARIA.BO`, `SUZLON.NS` या US market ke liye `AAPL`, `NVDA` likhein.")
-    user_search = st.text_input("Enter Ticker Code (स्टॉक का सिंबल कोड लिखकर कीबोर्ड का Enter दबाएं):", value="RELIANCE.NS").strip().upper()
-    if user_search:
-        try:
-            asset = yf.Ticker(user_search)
-            hist_data = asset.history(period="5y")
-            if not hist_data.empty:
-                current_price = hist_data['Close'].iloc[-1]
-                currency = "$" if "." not in user_search else "₹"
-                buying_price = current_price * 0.98
-                exit_price = current_price * 1.12
-                stop_loss = current_price * 0.95
-                
-                st.success(f"🏢 **Selected Asset Ticker:** {user_search}")
-                if "IDEA" in user_search or "YESBANK" in user_search or "SUZLON" in user_search or "NIO" in user_search:
-                    st.error("🚨 **REMOVE CRITICAL ALERT:** AI trend index detects continuous weakness. Exit immediately!")
-                else:
-                    st.warning(f"⚠️ **Monthly AI Rebalance View:** Suggested Buying: {currency}{buying_price:.2f} | Target: {currency}{exit_price:.2f}")
+tab_search.header("🔍 Broker-Style Universal Search Engine")
+tab_search.info("💡 **HINT:** Indian stocks ke liye `.NS` (NSE) ya `.BO` (BSE) jodein. Jaise: `TAPARIA.BO`, `SUZLON.NS` या US market ke liye `AAPL`, `NVDA` likhein.")
+user_search = tab_search.text_input("Enter Ticker Code (स्टॉक का सिंबल कोड लिखकर कीबोर्ड का Enter दबाएं):", value="RELIANCE.NS").strip().upper()
 
-                c1, c2, c3 = st.columns(3)
-                c1.metric(label="🟢 AI Entry Price", value=f"{currency}{buying_price:.2f}")
-                c2.metric(label="🎯 AI Exit Target", value=f"{currency}{exit_price:.2f}")
-                c3.metric(label="🛑 Risk Stop Loss", value=f"{currency}{stop_loss:.2f}")
-                st.info(f"💡 **Live Market Rate:** Currently trading at {currency}{current_price:.2f}")
-                st.line_chart(hist_data['Close'])
+if user_search:
+    try:
+        asset = yf.Ticker(user_search)
+        hist_data = asset.history(period="5y")
+        if not hist_data.empty:
+            current_price = hist_data['Close'].iloc[-1]
+            currency = "$" if "." not in user_search else "₹"
+            buying_price = current_price * 0.98
+            exit_price = current_price * 1.12
+            stop_loss = current_price * 0.95
+            
+            tab_search.success(f"🏢 **Selected Asset Ticker:** {user_search}")
+            if "IDEA" in user_search or "YESBANK" in user_search or "SUZLON" in user_search or "NIO" in user_search:
+                tab_search.error("🚨 **REMOVE CRITICAL ALERT:** AI trend index detects continuous weakness. Exit immediately!")
             else:
-                st.error("Exchange Registry Stream is empty. Suffix code lagana mat bhooliye (e.g. .NS or .BO).")
-        except:
-            st.error("Server connection timeout. Ensure ticker symbol is valid.")
+                tab_search.warning(f"⚠️ **Monthly AI Rebalance View:** Suggested Buying: {currency}{buying_price:.2f} | Target: {currency}{exit_price:.2f}")
+
+            c1, c2, c3 = tab_search.columns(3)
+            c1.metric(label="🟢 AI Entry Price", value=f"{currency}{buying_price:.2f}")
+            c2.metric(label="🎯 AI Exit Target", value=f"{currency}{exit_price:.2f}")
+            c3.metric(label="🛑 Risk Stop Loss", value=f"{currency}{stop_loss:.2f}")
+            tab_search.info(f"💡 **Live Market Rate:** Currently trading at {currency}{current_price:.2f}")
+            tab_search.line_chart(hist_data['Close'])
+        else:
+            tab_search.error("Exchange Registry Stream is empty. Suffix code lagana mat bhooliye (e.g. .NS or .BO).")
+    except:
+        tab_search.error("Server connection timeout. Ensure ticker symbol is valid.")
 
 # --- COLUMN 6: 🔥 LIVE IMPACT NEWS ---
-tab_news.subheader("🔔 First-Alert: Market Moving Global News Dashboard")
-with tab_news.container(border=True):
-    st.error("🚨 **BREAKING (US Market): US Federal Reserve hints at interest rate relief bets following Waller comments**")
-    st.info("🇮🇳 **साफ हिंदी अनुवाद (यूएस कम्युनिटी):** अमेरिकी फेडरल रिजर्व ने ब्याज दरों में कटौती के संकेत दिए हैं। इससे आईटी और बैंकिंग सेक्टर को सीधा फायदा होगा।")
-with tab_news.container(border=True):
+tab_news.subheader("👑 First-Alert: Market Moving Global News Dashboard")
+tab_news.write("---")
+tab_news.error("🚨 **BREAKING (US Market): US Federal Reserve hints at interest rate relief bets following Waller comments**")
+tab_news.info("🇮🇳 **साफ हिंदी अनुवाद (यूएस कम्युनिटी):** अमेरिकी फेडरल रिजर्व ने ब्याज दरों में कटौती के संकेत दिए हैं। इससे आईटी और बैंकिंग सेक्टर को सीधा फायदा होगा।")
+tab_news.success("🎯 **Benefited Sector:** Technology & Banking | **Stocks to watch:** NVDA, MSFT, HDFCBANK")
+tab_news.write("---")
+tab_news.error("🚨 **BREAKING (Indian Market): SEBI introduces new dynamic circuit filters to curb high volatility in Mid-Cap stocks**")
+tab_news.info("🇮🇳 **साफ हिंदी अनुवाद (भारतीय बाजार):** सेबी (SEBI) ने मिड-कैप शेयरों में उतार-चढ़ाव रोकने के लिए नए सर्किट नियम लागू किए हैं।")
+tab_news.success("🎯 **Benefited Sector:** Mid-Cap Quality Equities | **Impact:** High Capital Protection")
+
+# Global Disclaimer Footer
+st.markdown("---")
