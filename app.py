@@ -123,23 +123,18 @@ with tab_us:
             with us_pp_e_avoid:
                 for i in range(10): st.error(f"❌ **{us_etf_loss[i]}** | 🔴 Exit Zone Alert")
 
-# --- COLUMN 4: 🔍 BROKER-STYLE SEARCH ENGINE (With Suggestion List Feature Fix) ---
+# --- COLUMN 4: 🔍 BROKER-STYLE SEARCH ENGINE ---
 with tab_search:
     st.header("🔍 Broker-Style Deep Analytics Terminal")
     st.write("Broker app ki tarah kisi bhi stock ka naam ya code chunen, suggestion list apne aap aa jayegi.")
     
-    # 🌟 NEW REQUIREMENT FIX: A complete search pool list showing suggestions as you type/tap
     comprehensive_pool = [
-        # Indian Stocks (NSE Codes)
         "RELIANCE.NS", "TCS.NS", "INFY.NS", "HDFCBANK.NS", "ICICIBANK.NS", "IDEA.NS", "YESBANK.NS", "SUZLON.NS",
         "BHARTIARTL.NS", "SBIN.NS", "ITC.NS", "LT.NS", "AXISBANK.NS", "WIPRO.NS", "HCLTECH.NS",
-        # US Stocks
         "AAPL", "MSFT", "NVDA", "AMZN", "GOOGL", "META", "TSLA", "NIO", "BABA", "INTC",
-        # ETFs
         "NIFTYBEES.NS", "BANKBEES.NS", "VOO", "SOXX", "QQQ"
     ]
     
-    # st.selectbox renders as a clean typing searchable suggestion bar on mobile browsers
     user_search = st.selectbox("Type to Search Stock or ETF (नाम या कोड चुनें):", comprehensive_pool)
     
     if user_search:
@@ -157,10 +152,14 @@ with tab_search:
                     exit_price = current_price * 1.12
                     stop_loss = current_price * 0.95
                     
-                    # Fetching actual long corporate name
                     long_name = info.get('longName', user_search)
                     sector_name = info.get('sector', 'ETF Fund / Index Asset')
                     
                     st.success(f"🏢 **Official Company Name:** {long_name}  |  💼 **Sector Pool:** {sector_name}")
                     
-                    if any(x in user_search for x in ["IDEA", "YESBANK", "SUZLON", "NIO"]):
+                    # Exact indentation fixed line
+                    if "IDEA" in user_search or "YESBANK" in user_search or "SUZLON" in user_search or "NIO" in user_search:
+                        st.error("🚨 **REMOVE CRITICAL ALERT:** AI trend index detects heavy weakness. Exit immediately!")
+                    else:
+                        st.warning(f"⚠️ **Monthly Rebalance View:** Suggested Entry: {currency}{buying_price:.2f} | Exit Target: {currency}{exit_price:.2f}")
+
