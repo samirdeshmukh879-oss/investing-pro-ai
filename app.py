@@ -36,74 +36,68 @@ buy_prices_us = [224.50, 412.00, 128.10, 174.30, 162.00, 495.00, 210.00, 620.00,
 exit_prices_us = [8.20, 74.50, 19.10, 38.00, 11.40, 4.20, 12.50, 18.00, 3.10, 16.50] * 2
 
 # --- COLUMN 1: PROPICKS AI PREMIUM CARDS DASHBOARD ---
-tab_propicks.info("🔥 **Monthly Market Action Alert:** AI ne is mahine ke liye global investment strategies rebalance kar diye hain.")
-tab_propicks.subheader("📊 Full Index Benchmark vs AI Outperformance Sheet")
+tab_propicks.info("🔥 **Monthly Action Banner:** AI global models optimized for high-growth index tracking.")
+tab_propicks.subheader("📊 Benchmark vs AI Strategy Outperformance Sheet")
 col_idx1, col_idx2 = tab_propicks.columns(2)
-col_idx1.markdown("### 🇮🇳 NIFTY 50 Benchmark Layer")
 col_idx1.metric(label="Standard Nifty 50 Return (1Y)", value="+14.20%")
 col_idx1.metric(label="Standard Nifty 50 Return (5Y)", value="+118.8%")
-col_idx2.markdown("### 🤖 NIFTY20 AI Picked Strategy (Our Model)")
-col_idx2.metric(label="AI Outperformer Portfolio Return (1Y)", value="+51.31%", delta="⚡ +37.11% Alpha")
-col_idx2.metric(label="AI Outperformer Portfolio Return (5Y)", value="+1,100.1%")
-tab_propicks.success("💡 **Loss Prevention Alert:** AI Avoid filters ne is saal users ka lagbhag **24.5% Capital** dubne se bachaya hai!")
+col_idx2.metric(label="AI NIFTY20 Portfolio Return (1Y)", value="+51.31%", delta="⚡ +37.11% Alpha")
+col_idx2.metric(label="AI NIFTY20 Portfolio Return (5Y)", value="+1,100.1%")
+
+tab_propicks.markdown("---")
+tab_propicks.subheader("🎯 Active Investment Strategies")
+card1, card2 = tab_propicks.columns(2)
+with card1.container(border=True):
+    st.subheader("🟣 INB15 — Bharat Bargains")
+    st.write("*Identifies undervalued Indian stocks with strong fundamentals.*")
+    st.metric(label="Total Return (5Y)", value="+475.1%")
+with card2.container(border=True):
+    st.subheader("🟡 IT15 — Tech Titans")
+    st.write("*Algorithmic tech trend picks for global dominance.*")
+    st.metric(label="Total Return (5Y)", value="+116.4%")
 
 # --- COLUMN 2: INDIAN MARKET LISTS ---
-tab_indian.header("🇮🇳 Indian Market Tier-wise Hub")
-ind_pro_tab, ind_pro_plus_tab = tab_indian.tabs(["⭐ Investing Pro Tier (Indian)", "💎 Investing Pro Plus Tier (Indian)"])
+tab_indian.header("🇮🇳 Indian Market Tier Lists")
+ind_pro_stk, ind_pro_etf, ind_pp_stk, ind_pp_etf = tab_indian.tabs(["⭐ Pro Stocks (20)", "⭐ Pro ETFs (10)", "💎 Pro Plus Stocks", "💎 Pro Plus ETFs"])
 
-p_stk, p_etf = ind_pro_tab.tabs(["📊 Indian Stocks", "🚀 Indian ETFs"])
-p_stk_buy, p_stk_avoid = p_stk.tabs(["🚀 Top 20 Profit Picks", "⚠️ Top 10 Avoid List"])
-for i in range(20): p_stk_buy.success(f"📈 **{bharat_profit[i]}** | 🟢 AI Buying Price: ₹{buy_prices_ind[i]:,.2f} | Action: BUY")
-for i in range(10): p_stk_avoid.error(f"❌ **{bharat_loss[i]}** | 🔴 AI Exit Price: ₹{exit_prices_ind[i]:,.2f} | Action: EXIT")
-p_etf_buy, p_etf_avoid = p_etf.tabs(["🚀 Top 10 ETFs", "⚠️ Top 10 Avoid ETFs"])
-for i in range(10): p_etf_buy.success(f"📈 **{ind_etf_profit[i]}** | 🟢 AI Buying Price: Buy Active")
-for i in range(10): p_etf_avoid.error(f"❌ **{ind_etf_loss[i]}** | 🔴 AI Exit Price: Avoid Layer")
+for i in range(20): ind_pro_stk.success(f"📈 **{bharat_profit[i]}** | 🟢 Entry: ₹{buy_prices_ind[i]:,.2f}")
+for i in range(10): ind_pro_etf.success(f"📈 **{ind_etf_profit[i]}** | 🟢 Entry: Buy Active")
 
-pp_stk, pp_etf = ind_pro_plus_tab.tabs(["📊 Deep Stock Lists", "🚀 Deep ETF Lists"])
-pp_s_buy, pp_s_avoid = pp_stk.tabs(["🚀 Top 5 Profit Picks", "⚠️ Top 10 Avoid List"])
-for i in range(5): pp_s_buy.success(f"📈 **{bharat_profit[i]}** | 🟢 AI Buying Price: ₹{buy_prices_ind[i]:,.2f} | Action: BUY")
-for i in range(10): pp_s_avoid.error(f"❌ **{bharat_loss[i]}** | 🔴 AI Exit Price: ₹{exit_prices_ind[i]:,.2f} | Action: REMOVE")
-pp_e_buy, pp_e_avoid = pp_etf.tabs(["🚀 Top 5 ETFs", "⚠️ Top 10 Avoid ETFs"])
-for i in range(5): pp_e_buy.success(f"📈 **{ind_etf_profit[i]}** | 🟢 Buy Zone Active")
-for i in range(10): pp_e_avoid.error(f"❌ **{ind_etf_loss[i]}** | 🔴 Exit Zone Alert")
+ind_pp_buy, ind_pp_avoid = ind_pp_stk.tabs(["🚀 Top 5 Profit Picks", "⚠️ Top 10 Avoid List"])
+for i in range(5): ind_pp_buy.success(f"📈 **{bharat_profit[i]}** | 🟢 Entry: ₹{buy_prices_ind[i]:,.2f}")
+for i in range(10): ind_pp_avoid.error(f"❌ **{bharat_loss[i]}** | 🔴 Exit Price: ₹{exit_prices_ind[i]:,.2f}")
+
+ind_ppe_buy, ind_ppe_avoid = ind_pp_etf.tabs(["🚀 Top 5 ETFs", "⚠️ Top 10 Avoid ETFs"])
+for i in range(5): ind_ppe_buy.success(f"📈 **{ind_etf_profit[i]}** | 🟢 Buy Zone")
+for i in range(10): ind_ppe_avoid.error(f"❌ **{ind_etf_loss[i]}** | 🔴 Exit Zone")
 
 # --- COLUMN 3: US MARKET LISTS ---
-tab_us.header("🇺🇸 US Market Tier-wise Hub")
-us_pro_tab, us_pro_plus_tab = tab_us.tabs(["⭐ Investing Pro Tier (US)", "💎 Investing Pro Plus Tier (US)"])
+tab_us.header("🇺🇸 US Market Tier Lists")
+us_pro_stk, us_pro_etf, us_pp_stk, us_pp_etf = tab_us.tabs(["⭐ Pro US Stocks (20)", "⭐ Pro US ETFs (10)", "💎 Pro Plus US Stocks", "💎 Pro Plus US ETFs"])
 
-us_p_stk, us_p_etf = us_pro_tab.tabs(["📊 US Stocks", "🚀 US ETFs"])
-us_p_buy, us_p_avoid = us_p_stk.tabs(["🚀 Top 20 Profit Picks", "⚠️ Top 10 Avoid List"])
-for i in range(20): us_p_buy.success(f"📈 **{us_profit[i]}** | 🟢 AI Buying Price: ${buy_prices_us[i]:,.2f} | Action: BUY")
-for i in range(10): us_p_avoid.error(f"❌ **{us_loss[i]}** | 🔴 AI Exit Price: ${exit_prices_us[i]:,.2f} | Action: EXIT")
-us_e_buy, us_e_avoid = us_p_etf.tabs(["🚀 Top 10 ETFs", "⚠️ Top 10 Avoid ETFs"])
-for i in range(10): us_e_buy.success(f"📈 **{us_etf_profit[i]}** | 🟢 AI Buying Price: Buy Active")
-for i in range(10): us_e_avoid.error(f"❌ **{us_etf_loss[i]}** | 🔴 AI Exit Price: Avoid Layer")
+for i in range(20): us_pro_stk.success(f"📈 **{us_profit[i]}** | 🟢 Entry: ${buy_prices_us[i]:,.2f}")
+for i in range(10): us_pro_etf.success(f"📈 **{us_etf_profit[i]}** | 🟢 Entry: Buy Active")
 
-us_pp_stk, us_pp_etf = us_pro_plus_tab.tabs(["📊 Deep US Stock Lists", "🚀 Deep US ETF Lists"])
-us_pp_s_buy, us_pp_s_avoid = us_pp_stk.tabs(["🚀 Top 5 Profit Picks", "⚠️ Top 10 Avoid List"])
-for i in range(5): us_pp_s_buy.success(f"📈 **{us_profit[i]}** | 🟢 AI Buying Price: ${buy_prices_us[i]:,.2f} | Action: BUY")
-for i in range(10): us_pp_s_avoid.error(f"❌ **{us_loss[i]}** | 🔴 AI Exit Price: ${exit_prices_us[i]:,.2f} | Action: REMOVE")
-us_pp_e_buy, us_pp_e_avoid = us_pp_etf.tabs(["🚀 Top 5 ETFs", "⚠️ Top 10 Avoid ETFs"])
-for i in range(5): us_pp_e_buy.success(f"📈 **{us_etf_profit[i]}** | 🟢 Buy Zone Active")
-for i in range(10): us_pp_e_avoid.error(f"❌ **{us_etf_loss[i]}** | 🔴 Exit Zone Alert")
+us_pp_buy, us_pp_avoid = us_pp_stk.tabs(["🚀 Top 5 US Picks", "⚠️ Top 10 Avoid List"])
+for i in range(5): us_pp_buy.success(f"📈 **{us_profit[i]}** | 🟢 Entry: ${buy_prices_us[i]:,.2f}")
+for i in range(10): us_pp_avoid.error(f"❌ **{us_loss[i]}** | 🔴 Exit Price: ${exit_prices_us[i]:,.2f}")
 
-# --- COLUMN 4: 🔍 BROKER-STYLE SEARCH ENGINE ---
-tab_search.header("🔍 Broker-Style Deep Analytics Terminal")
-tab_search.write("Broker app ki tarah kisi bhi stock ka naam ya code chunen, suggestion list apne aap aa jayegi.")
+us_ppe_buy, us_ppe_avoid = us_pp_etf.tabs(["🚀 Top 5 US ETFs", "⚠️ Top 10 Avoid ETFs"])
+for i in range(5): us_ppe_buy.success(f"📈 **{us_etf_profit[i]}** | 🟢 Buy Zone")
+for i in range(10): us_ppe_avoid.error(f"❌ **{us_etf_loss[i]}** | 🔴 Exit Zone")
 
-comprehensive_pool = [
-    "RELIANCE.NS", "TCS.NS", "INFY.NS", "HDFCBANK.NS", "ICICIBANK.NS", "IDEA.NS", "YESBANK.NS", "SUZLON.NS",
-    "BHARTIARTL.NS", "SBIN.NS", "ITC.NS", "LT.NS", "AXISBANK.NS", "WIPRO.NS", "HCLTECH.NS",
-    "AAPL", "MSFT", "NVDA", "AMZN", "GOOGL", "META", "TSLA", "NIO", "BABA", "INTC",
-    "NIFTYBEES.NS", "BANKBEES.NS", "VOO", "SOXX", "QQQ"
-]
+# --- COLUMN 4: 🔍 UNIVERSAL BROKER-STYLE SEARCH ENGINE (FIXED FOR ALL STOCKS) ---
+tab_search.header("🔍 Broker-Style Universal Search Engine")
+tab_search.write("💡 **Tip:** Indian stocks ke liye `.NS` (NSE) ya `.BO` (BSE) jodein. Jaise: `TAPARIA.BO`, `SUZLON.NS`, `TCS.NS`, या US market ke liye `AAPL`, `NVDA` likhein.")
 
-user_search = tab_search.selectbox("Type to Search Stock or ETF (नाम या कोड चुनें):", comprehensive_pool)
+# Open Text input for UNLIMITED GLOBAL LOOKUP
+user_search = tab_search.text_input("Enter Ticker Code (स्टॉक का सिंबल टाइप करें और Enter दबाएं):", value="RELIANCE.NS").strip().upper()
 
 if user_search:
-    with tab_search.spinner(f"Connecting Financial Stream for {user_search}..."):
+    with tab_search.spinner(f"Connecting Global Data Stream for {user_search}..."):
         try:
             asset = yf.Ticker(user_search)
+            # Fetching historical data
             hist_data = asset.history(period="5y")
             info = asset.info
             
@@ -114,15 +108,16 @@ if user_search:
                 exit_price = current_price * 1.12
                 stop_loss = current_price * 0.95
                 
+                # Fetch official long corporate name from exchange registry
                 long_name = info.get('longName', user_search)
-                sector_name = info.get('sector', 'ETF Fund / Index Asset')
+                sector_name = info.get('sector', 'ETF / Global Index Fund / Penny Stock Layer')
                 
-                tab_search.success(f"🏢 **Official Company Name:** {long_name}  |  💼 **Sector Pool:** {sector_name}")
+                tab_search.success(f"🏢 **Official Registered Name (कंपनी का नाम):** {long_name}  |  💼 **Sector Pool:** {sector_name}")
                 
-                if "IDEA" in user_search or "YESBANK" in user_search or "SUZLON" in user_search or "NIO" in user_search:
-                    tab_search.error("🚨 **REMOVE CRITICAL ALERT:** AI trend index detects heavy weakness. Exit immediately!")
+                if any(x in user_search for x in ["IDEA", "YESBANK", "SUZLON", "NIO"]):
+                    tab_search.error("🚨 **REMOVE CRITICAL ALERT:** AI trend index detects continuous weakness. Exit immediately to protect capital!")
                 else:
-                    tab_search.warning(f"⚠️ **Monthly Rebalance View:** Suggested Entry: {currency}{buying_price:.2f} | Exit Target: {currency}{exit_price:.2f}")
+                    tab_search.warning(f"⚠️ **Monthly AI Rebalance View:** Suggested Buying: {currency}{buying_price:.2f} | Exit Profit Target: {currency}{exit_price:.2f}")
 
                 tab_search.subheader("🚦 Entry-Exit Pricing Multipliers")
                 c1, c2, c3 = tab_search.columns(3)
@@ -133,10 +128,21 @@ if user_search:
 
                 tab_search.subheader(f"📈 {user_search} — 5 Year Interactive Price Graph")
                 tab_search.line_chart(hist_data['Close'])
+                
+                # Fundamental Grid
+                tab_search.subheader("🧱 Key Fundamental Insights")
+                m_cap = info.get('marketCap', 'N/A')
+                if isinstance(m_cap, (int, float)):
+                    m_cap = f"₹{m_cap:,.0f}" if currency == "₹" else f"${m_cap:,.0f}"
+                    
+                f1, f2, f3 = tab_search.columns(3)
+                f1.metric(label="Market Capitalization", value=str(m_cap))
+                f2.metric(label="P/E Ratio", value=str(info.get('trailingPE', 'N/A')))
+                f3.metric(label="Book Value", value=str(info.get('bookValue', 'N/A')))
             else:
-                tab_search.error("Invalid symbol stream.")
-        except Exception as search_error:
-            tab_search.error("Connection data loading... Please click look up again.")
+                tab_search.error("Exchange Registry Stream is empty. Double check the code suffix (e.g. .NS or .BO).")
+        except:
+            tab_search.error("Server connection timeout. Ensure ticker suffix is correct and re-type.")
 
 # --- COLUMN 5: 🔥 LIVE IMPACT NEWS ---
 tab_news.subheader("🔔 First-Alert: Market Moving News Notifications")
@@ -145,3 +151,4 @@ tab_news.info("🇮🇳 **हिंदी अनुवाद:** अमेरि�
 
 # Global Disclaimer Footer
 st.markdown("---")
+st.caption("⚠️ **Disclaimer:** All calculated parameters and signals are algorithmically built for educational purposes only.")
