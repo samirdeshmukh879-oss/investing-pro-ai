@@ -97,7 +97,7 @@ us_ppe_buy, us_ppe_avoid = us_pp_etf.tabs(["🚀 Top 5 US ETFs", "⚠️ Top 10 
 for i in range(5): us_ppe_buy.success(f"📈 **{us_etf_profit[i]}** | 🟢 Buy Zone")
 for i in range(10): us_ppe_avoid.error(f"❌ **{us_etf_loss[i]}** | 🔴 Exit Zone")
 
-# --- COLUMN 4: 🛢️ LIVE COMMODITIES DASHBOARD ---
+# --- COLUMN 4: 🛢️ LIVE COMMODITIES DASHBOARD (OPTIMIZED TO PREVENT BLANK SCREEN) ---
 tab_commodities.header("🛢️ Global Commodities Live Dashboard")
 commodity_tickers = {
     "🥇 Live Gold Price (सोना)": "GC=F",
@@ -109,10 +109,16 @@ c_col1, c_col2 = tab_commodities.columns(2)
 for index, (label, ticker) in enumerate(commodity_tickers.items()):
     target_col = c_col1 if index % 2 == 0 else c_col2
     try:
-        c_price = yf.Ticker(ticker).history(period="1d")['Close'].iloc[-1]
-        target_col.metric(label=label, value=f"${c_price:,.2f}")
-    except:
-        target_col.caption(f"🔄 {label} streaming...")
+        # Added timeout logic to prevent freeze
+        ticker_obj = yf.Ticker(ticker)
+        hist_data = ticker_obj.history(period="1d", timeout=5) 
+        if not hist_data.empty:
+            c_price = hist_data['Close'].iloc[-1]
+            target_col.metric(label=label, value=f"${c_price:,.2f}")
+        else:
+            target_col.caption(f"🔄 {label} streaming...")
+    except Exception as e:
+        target_col.caption(f"🔄 {label} temporary delayed... (Live API Sync Active)")
 
 # --- COLUMN 5: 🔍 BROKER-STYLE SEARCH ENGINE ---
 with tab_search:
@@ -151,7 +157,4 @@ with tab_search:
 # --- COLUMN 6: 🔥 LIVE IMPACT NEWS ---
 tab_news.subheader("👑 First-Alert: Market Moving Global News Dashboard")
 tab_news.error("🚨 **BREAKING (US Market): US Federal Reserve hints at interest rate relief bets following Waller comments**")
-tab_news.info("🇮🇳 **साफ हिंदी अनुवाद (यूएस कम्युनिटी):** अमेरिकी फेडरल रिजर्व ने ब्याज दरों में कटौती के संकेत दिए हैं। इससे आईटी और बैंकिंग सेक्टर को सीधा फायदा होगा।")
-tab_news.success("🎯 **Benefited Sector:** Technology & Banking | **Stocks to watch:** NVDA, MSFT, HDFCBANK")
-tab_news.write("---")
-tab_news.error("🚨 **BREAKING (Indian Market): SEBI introduces new dynamic circuit filters to curb high volatility in Mid-Cap stocks**")
+tab_news.info("🇮🇳 **साफ हिंदी अनुवाद (यूएस कम्युनिटी):** अमेरिकी फेडरल रिजर्व ने ब्याज दरों में कटौती के संकेत दिए हैं। इससे आईटी और banking sector ko seedha fayda hoga.")
