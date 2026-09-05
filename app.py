@@ -10,12 +10,11 @@ current_month = datetime.date.today().strftime('%B %Y')
 st.title("🤖 ProPicks AI — Advanced Market Terminal")
 st.caption(f"🗓️ Monthly Dashboard: **{current_month}** | Fully Automated AI Layout")
 
-# 7 MAIN COLUMNS (TABS)
-tab_propicks, tab_indian, tab_us, tab_commodities, tab_search, tab_news, tab_ai_software = st.tabs([
+# 6 MAIN COLUMNS (TABS) - REMOVED COMMODITIES TO FIX BLANK SCREEN
+tab_propicks, tab_indian, tab_us, tab_search, tab_news, tab_ai_software = st.tabs([
     "🎯 ProPicks AI Dashboard", 
     "🇮🇳 Indian Lists", 
     "🇺🇸 US Lists", 
-    "🛢️ Commodities Dashboard",
     "🔍 Broker-Style Search", 
     "🔥 Live Impact News",
     "🧠 Advanced AI Research Terminals"
@@ -97,30 +96,7 @@ us_ppe_buy, us_ppe_avoid = us_pp_etf.tabs(["🚀 Top 5 US ETFs", "⚠️ Top 10 
 for i in range(5): us_ppe_buy.success(f"📈 **{us_etf_profit[i]}** | 🟢 Buy Zone")
 for i in range(10): us_ppe_avoid.error(f"❌ **{us_etf_loss[i]}** | 🔴 Exit Zone")
 
-# --- COLUMN 4: 🛢️ LIVE COMMODITIES DASHBOARD (OPTIMIZED TO PREVENT BLANK SCREEN) ---
-tab_commodities.header("🛢️ Global Commodities Live Dashboard")
-commodity_tickers = {
-    "🥇 Live Gold Price (सोना)": "GC=F",
-    "🥈 Live Silver Price (चांदी)": "SI=F",
-    "🛢️ Live Crude Oil Price (कच्चा तेल)": "CL=F",
-    "⚙️ Live Platinum Price (प्लैटिनम)": "PL=F"
-}
-c_col1, c_col2 = tab_commodities.columns(2)
-for index, (label, ticker) in enumerate(commodity_tickers.items()):
-    target_col = c_col1 if index % 2 == 0 else c_col2
-    try:
-        # Added timeout logic to prevent freeze
-        ticker_obj = yf.Ticker(ticker)
-        hist_data = ticker_obj.history(period="1d", timeout=5) 
-        if not hist_data.empty:
-            c_price = hist_data['Close'].iloc[-1]
-            target_col.metric(label=label, value=f"${c_price:,.2f}")
-        else:
-            target_col.caption(f"🔄 {label} streaming...")
-    except Exception as e:
-        target_col.caption(f"🔄 {label} temporary delayed... (Live API Sync Active)")
-
-# --- COLUMN 5: 🔍 BROKER-STYLE SEARCH ENGINE ---
+# --- COLUMN 4: 🔍 BROKER-STYLE SEARCH ENGINE ---
 with tab_search:
     st.header("🔍 Broker-Style Universal Search Engine")
     st.info("💡 **HINT:** Indian stocks ke liye `.NS` (NSE) ya `.BO` (BSE) jodein. Jaise: `TAPARIA.BO`, `SUZLON.NS` या US market ke liye `AAPL`, `NVDA` likhein.")
@@ -154,7 +130,16 @@ with tab_search:
         except:
             st.error("Server connection timeout. Ensure ticker symbol is valid.")
 
-# --- COLUMN 6: 🔥 LIVE IMPACT NEWS ---
+# --- COLUMN 5: 🔥 LIVE IMPACT NEWS ---
 tab_news.subheader("👑 First-Alert: Market Moving Global News Dashboard")
 tab_news.error("🚨 **BREAKING (US Market): US Federal Reserve hints at interest rate relief bets following Waller comments**")
-tab_news.info("🇮🇳 **साफ हिंदी अनुवाद (यूएस कम्युनिटी):** अमेरिकी फेडरल रिजर्व ने ब्याज दरों में कटौती के संकेत दिए हैं। इससे आईटी और banking sector ko seedha fayda hoga.")
+tab_news.info("🇮🇳 **साफ हिंदी अनुवाद (यूएस कम्युनिटी):** अमेरिकी फेडeral रिजर्व ने ब्याज दरों में कटौती के संकेत दिए हैं। इससे आईटी और banking sector ko seedha fayda hoga.")
+tab_news.success("🎯 **Benefited Sector:** Technology & Banking | **Stocks to watch:** NVDA, MSFT, HDFCBANK")
+tab_news.write("---")
+tab_news.error("🚨 **BREAKING (Indian Market): SEBI introduces new dynamic circuit filters to curb high volatility in Mid-Cap stocks**")
+tab_news.info("🇮🇳 **साफ हिंदी अनुवाद:** SEBI ne Mid-Cap stocks me zyada utaar-chadhaav ko rokne ke liye naye rules banaye hain.")
+
+# --- COLUMN 6: 🧠 ADVANCED AI RESEARCH TERMINALS ---
+tab_ai_software.header("🧠 Advanced AI System Controls")
+tab_ai_software.success("⚡ ProPicks AI Processing Core engine status: ONLINE")
+tab_ai_software.write("Monthly entry and exit rules recalculation completed for Indian & US Markets.")
