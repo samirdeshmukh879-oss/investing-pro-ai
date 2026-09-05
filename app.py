@@ -151,7 +151,7 @@ with tab_search:
 # --- COLUMN 6: 🔥 LIVE IMPACT NEWS ---
 tab_news.subheader("👑 First-Alert: Market Moving Global News Dashboard")
 tab_news.error("🚨 **BREAKING (US Market): US Federal Reserve hints at interest rate relief bets following Waller comments**")
-tab_news.info("🇮🇳 **साफ हिंदी अनुवाद (यूएस कम्युनिटी):** अमेरिकी फेडरल रिजर्व ने ब्याज दरों में कटौती के संकेत दिए हैं। इससे आईटी और बैंकिंग收藏 सेक्टर को सीधा फायदा होगा।")
+tab_news.info("🇮🇳 **साफ हिंदी अनुवाद (यूएस कम्युनिटी):** अमेरिकी फेडरल रिजर्व ने ब्याज दरों में कटौती के संकेत दिए हैं। इससे आईटी और बैंकिंग सेक्टर को सीधा फायदा होगा।")
 tab_news.success("🎯 **Benefited Sector:** Technology & Banking | **Stocks to watch:** NVDA, MSFT, HDFCBANK")
 tab_news.write("---")
 tab_news.error("🚨 **BREAKING (Indian Market): SEBI introduces new dynamic circuit filters to curb high volatility in Mid-Cap stocks**")
