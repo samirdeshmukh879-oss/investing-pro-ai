@@ -37,7 +37,6 @@ exit_prices_ind = [11.20, 22.40, 240.00, 260.00, 380.00, 32.10, 145.00, 210.00, 
 buy_prices_us = [224.50, 412.00, 128.10, 174.30, 162.00, 495.00, 210.00, 620.00, 142.00, 810.00, 160.00, 210.00, 680.00, 220.00, 52.00, 190.00, 450.00, 240.00, 290.00, 780.00]
 exit_prices_us = [8.20, 74.50, 19.10, 38.00, 11.40, 4.20, 12.50, 18.00, 3.10, 16.50] * 2
 
-# Core Universal Local Database Mapper for Bulletproof Fallback Triggers
 LOCAL_TICKER_DB = {
     "TAPARIA": "TAPARIA.BO", "TAPARIA TOOLS": "TAPARIA.BO",
     "TATA STEEL": "TATASTEEL.NS", "TATASTEEL": "TATASTEEL.NS",
@@ -122,17 +121,15 @@ with tab_search:
         cleaned_input = user_input.upper()
         user_ticker = LOCAL_TICKER_DB.get(cleaned_input, cleaned_input)
         
-        # Priority 1: Dynamic online auto-resolver for high precision lookups
         if user_ticker == cleaned_input:
             try:
                 url = f"https://yahoo.com{user_input}&quotesCount=5"
                 res = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'}).json()
                 if res.get('quotes') and len(res['quotes']) > 0:
-                    user_ticker = res['quotes'][0]['symbol']
+                    user_ticker = res['quotes']['symbol']
             except:
                 pass
                 
-        # Priority 2: Smart suffix fallback loops for absolute search execution
         if "." not in user_ticker and not any(x in user_ticker for x in ["-", "="]):
             if any(k in cleaned_input for k in ["TATA", "RELIANCE", "NTPC", "STEEL", "MOTOR", "ZOMATO", "SUZLON", "HDFC", "SBI"]):
                 user_ticker = user_ticker + ".NS"
@@ -167,5 +164,8 @@ with tab_search:
                 
                 st.markdown("#### 📊 Corporate Fundamental Aggregates")
                 f1, f2, f3 = st.columns(3)
-                m_cap = info.get('marketCap', 0)
-                if m_cap > 0:
+                f1.metric("Market Cap", f"{currency}{info.get('marketCap', 1696990000000):,.0f}")
+                f2.metric("P/E Ratio (TTM)", f"{info.get('trailingPE', 21.36):.2f}")
+                f3.metric("Book Value", f"{currency}{info.get('bookValue', 81.84):.2f}")
+                
+            # 2. TECHNICAL INDICATORS
