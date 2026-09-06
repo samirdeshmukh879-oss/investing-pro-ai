@@ -3,14 +3,14 @@ import yfinance as yf
 import pandas as pd
 import datetime
 
-# Page configuration for Premium Wide Fintech Layout
+# Premium Ultra Wide Layout Configuration
 st.set_page_config(page_title="Investing Pro AI+", layout="wide")
 
 current_month = datetime.date.today().strftime('%B %Y')
 st.title("🤖 ProPicks AI — Advanced Market Terminal")
 st.caption(f"🗓️ Monthly Dashboard: **{current_month}** | Fully Automated AI Layout")
 
-# 6 MAIN COLUMNS (TABS)
+# 6 COMPREHENSIVE CONTROL TABS
 tab_propicks, tab_indian, tab_us, tab_search, tab_news, tab_ai_software = st.tabs([
     "🎯 ProPicks AI Dashboard", 
     "🇮🇳 Indian Lists", 
@@ -20,7 +20,7 @@ tab_propicks, tab_indian, tab_us, tab_search, tab_news, tab_ai_software = st.tab
     "🧠 Advanced AI Research Terminals"
 ])
 
-# --- STATIC ARRAYS WITH CORE MULTIPLIERS FOR PERFORMANCE SPEED ---
+# --- FIXED PERFORMANCE TIER INDEX SYSTEM SPEED MATRICES ---
 bharat_profit = ["RELIANCE", "TCS", "INFY", "HDFCBANK", "ICICIBANK", "BHARTIARTL", "SBIN", "ITC", "LT", "AXISBANK", "WIPRO", "HCLTECH", "ASIANPAINT", "MARUTI", "SUNPHARMA", "TITAN", "ULTRACEMCO", "NTPC", "POWERGRID", "ONGC"]
 bharat_loss = ["IDEA", "YESBANK", "SUZLON", "ZOMATO", "PAYTM", "RPOWER", "IRFC", "RVNL", "SJVN", "NHPC", "GTLINFRA", "IFCI", "ALOKINDS", "VIKASECO", "JPPOWER", "SOUTHBANK", "RCOM", "SREINFRA", "HEC", "PCJEWELLER"]
 ind_etf_profit = ["NIFTYBEES", "BANKBEES", "JUNIORBEES", "INFRABEES", "SETFNIFTY", "CPSEETF", "MIDCETF", "CONSUMBEES", "PHARMABEES", "MAHKANGST"]
@@ -36,7 +36,7 @@ exit_prices_ind = [11.20, 22.40, 240.00, 260.00, 380.00, 32.10, 145.00, 210.00, 
 buy_prices_us = [224.50, 412.00, 128.10, 174.30, 162.00, 495.00, 210.00, 620.00, 142.00, 810.00, 160.00, 210.00, 680.00, 220.00, 52.00, 190.00, 450.00, 240.00, 290.00, 780.00]
 exit_prices_us = [8.20, 74.50, 19.10, 38.00, 11.40, 4.20, 12.50, 18.00, 3.10, 16.50] * 2
 
-# --- LOCAL DATABASE MATRIX DICTIONARY TO PREVENT BLANK SCREEN & FIX TEXT SEARCH ---
+# Absolute Offline Mapping Reference Array Configuration
 LOCAL_TICKER_DB = {
     "TAPARIA": "TAPARIA.BO",
     "TAPARIA TOOLS": "TAPARIA.BO",
@@ -46,7 +46,6 @@ LOCAL_TICKER_DB = {
     "NTPC GREEN": "NTPC.NS",
     "TCS": "TCS.NS",
     "INFOSYS": "INFY.NS",
-    "INFY": "INFY.NS",
     "SUZLON": "SUZLON.NS",
     "ZOMATO": "ZOMATO.NS",
     "TATA MOTORS": "TATAMOTORS.NS",
@@ -57,7 +56,7 @@ LOCAL_TICKER_DB = {
     "TESLA": "TSLA"
 }
 
-# --- COLUMN 1: PROPICKS AI PREMIUM CARDS DASHBOARD ---
+# --- CONTROL TAB 1: PROPICKS ACTIVE METRIC SHEETS ---
 tab_propicks.info("🔥 **Monthly Action Banner:** AI global models optimized for high-growth index tracking.")
 tab_propicks.subheader("📊 Benchmark vs AI Strategy Outperformance Sheet")
 col_idx1, col_idx2 = tab_propicks.columns(2)
@@ -81,7 +80,7 @@ exp2.write("• Tech Benchmark Return (5Y): **+60.0%**")
 exp2.write("• AI Tech Strategy Return (5Y): **+116.4%**")
 for i in range(5): exp2.success(f"🚀 AI Picked Global Tech: **{us_profit[i]}** | Momentum Active")
 
-# --- COLUMN 2: INDIAN MARKET LISTS ---
+# --- CONTROL TAB 2: INDIAN MARKET TIER LIST MODULE ---
 tab_indian.header("🇮🇳 Indian Market Tier Lists")
 ind_pro_stk, ind_pro_etf, ind_pp_stk, ind_pp_etf = tab_indian.tabs(["⭐ Pro Stocks (20)", "⭐ Pro ETFs (10)", "💎 Pro Plus Stocks", "💎 Pro Plus ETFs"])
 
@@ -99,7 +98,7 @@ ind_ppe_buy, ind_ppe_avoid = ind_pp_etf.tabs(["🚀 Top 5 ETFs", "⚠️ Top 10 
 for i in range(5): ind_ppe_buy.success(f"📈 **{ind_etf_profit[i]}** | 🟢 Buy Zone")
 for i in range(10): ind_ppe_avoid.error(f"❌ **{ind_etf_loss[i]}** | 🔴 Exit Zone")
 
-# --- COLUMN 3: US MARKET LISTS ---
+# --- CONTROL TAB 3: UNITED STATES CONTROL MODULE ---
 tab_us.header("🇺🇸 US Market Tier Lists")
 us_pro_stk, us_pro_etf, us_pp_stk, us_pp_etf = tab_us.tabs(["⭐ Pro US Stocks (20)", "⭐ Pro US ETFs (10)", "💎 Pro Plus US Stocks", "💎 Pro Plus US ETFs"])
 
@@ -117,30 +116,24 @@ us_ppe_buy, us_ppe_avoid = us_pp_etf.tabs(["🚀 Top 5 US ETFs", "⚠️ Top 10 
 for i in range(5): us_ppe_buy.success(f"📈 **{us_etf_profit[i]}** | 🟢 Buy Zone")
 for i in range(10): us_ppe_avoid.error(f"❌ **{us_etf_loss[i]}** | 🔴 Exit Zone")
 
-# --- COLUMN 4: 🔍 BROKER-STYLE COMPANY NAME SEARCH ENGINE ---
+# --- CONTROL TAB 4: 🔍 UNIVERSAL NAME ROUTING SEARCH ENGINE ---
 with tab_search:
     st.header("🔍 Broker-Style Universal Search Engine")
-    st.info("💡 **HINT:** Ab aap kisi bhi share ka naam seedhe type kar sakte hain! Jaise: `Taparia`, `Reliance`, `NTPC`, `Apple` etc.")
+    st.info("💡 **HINT:** Type company names directly! Examples: `Taparia`, `Reliance`, `NTPC`, `Apple`")
     
     user_input = st.text_input("Enter Company Name or Ticker (कंपनी का नाम लिखें):", value="Taparia").strip()
     
     if user_input:
         cleaned_input = user_input.upper()
-        user_search = None
+        # Direct key fallback assignments to bypass request dependencies
+        user_search = LOCAL_TICKER_DB.get(cleaned_input, cleaned_input)
         
-        # Priority 1: Match directly from our absolute offline secure matrix dictionary
-        if cleaned_input in LOCAL_TICKER_DB:
-            user_search = LOCAL_TICKER_DB[cleaned_input]
-        else:
-            # Priority 2: Incase profile is custom, scan text patterns to find key segment
+        # Partial containment check for names containing specific variations
+        if user_search == cleaned_input:
             for key, val in LOCAL_TICKER_DB.items():
                 if key in cleaned_input or cleaned_input in key:
                     user_search = val
                     break
-        
-        # Priority 3: Ultimate raw uppercase structural match fallback loop
-        if not user_search:
-            user_search = cleaned_input
 
         try:
             asset = yf.Ticker(user_search)
@@ -148,15 +141,10 @@ with tab_search:
             
             if not hist_data.empty:
                 current_price = hist_data['Close'].iloc[-1]
-                currency = "$" if ("." not in user_search and not any(x in user_search for x in ["NS", "BO"])) else "₹"
+                currency = "$" if ("." not in user_search and "NS" not in user_search and "BO" not in user_search) else "₹"
                 buying_price = current_price * 0.98
                 exit_price = current_price * 1.12
                 stop_loss = current_price * 0.95
-                
-                info_dict = asset.info
-                market_cap = info_dict.get('marketCap', 0)
-                pe_ratio = info_dict.get('trailingPE', 0.0)
-                book_value = info_dict.get('bookValue', 0.0)
                 
                 st.success(f"🏢 **Selected Asset Ticker Detected:** {user_search}")
                 
@@ -170,9 +158,18 @@ with tab_search:
                 c2.metric(label="🎯 AI Exit Target", value=f"{currency}{exit_price:.2f}")
                 c3.metric(label="🛑 Risk Stop Loss", value=f"{currency}{stop_loss:.2f}")
                 
+                # Fetching absolute static tracking references
+                info_dict = asset.info
+                market_cap = info_dict.get('marketCap', 0)
+                pe_ratio = info_dict.get('trailingPE', 0.0)
+                book_value = info_dict.get('bookValue', 0.0)
+                
                 m1, m2, m3 = st.columns(3)
                 if market_cap > 0:
                     m1.metric(label="📊 Market Capitalization", value=f"{currency}{market_cap:,.0f}")
                 else:
                     m1.metric(label="📊 Market Capitalization", value="Data Stream Syncing")
                     
+                m2.metric(label="📈 P/E Ratio", value=f"{pe_ratio:.2f}" if pe_ratio else "N/A")
+                m3.metric(label="📘 Book Value", value=f"{currency}{book_value:.2f}" if book_value else "N/A")
+                
