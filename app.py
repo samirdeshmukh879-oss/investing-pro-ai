@@ -2,6 +2,7 @@ import streamlit as st
 import yfinance as yf
 import pandas as pd
 import datetime
+import requests
 
 # Page configuration for Premium Wide Fintech Layout
 st.set_page_config(page_title="Investing Pro AI+", layout="wide")
@@ -96,60 +97,71 @@ us_ppe_buy, us_ppe_avoid = us_pp_etf.tabs(["🚀 Top 5 US ETFs", "⚠️ Top 10 
 for i in range(5): us_ppe_buy.success(f"📈 **{us_etf_profit[i]}** | 🟢 Buy Zone")
 for i in range(10): us_ppe_avoid.error(f"❌ **{us_etf_loss[i]}** | 🔴 Exit Zone")
 
-# --- COLUMN 4: 🔍 BROKER-STYLE SEARCH ENGINE ---
+# --- COLUMN 4: 🔍 BROKER-STYLE UNIVERSAL COMPANY NAME SEARCH ENGINE ---
 with tab_search:
     st.header("🔍 Broker-Style Universal Search Engine")
-    st.info("💡 **HINT:** Indian stocks ke liye `.NS` (NSE) ya `.BO` (BSE) jodein. Jaise: `NTPC.NS`, `RELIANCE.NS`, ya US market ke liye `AAPL` likhein.")
+    st.info("💡 **HINT:** Ab aap kisi bhi share ka naam seedhe type kar sakte hain! Jaise: `Reliance`, `Tata Motors`, `NTPC`, `Apple` etc.")
     
-    user_raw_input = st.text_input("Enter Ticker Code (स्टॉक का सिंबल कोड लिखें):", value="NTPC.NS").strip()
-    user_search = user_raw_input.upper()
+    user_input = st.text_input("Enter Company Name or Ticker (कंपनी का नाम यहाँ लिखें):", value="NTPC").strip()
     
-    # Smart structural fallback processing
-    if "NTPC GREEN" in user_search:
-        user_search = "NTPC.NS"
-        st.caption("🤖 *AI Auto-Correct:* Mapped input stream directly to primary asset listed as 'NTPC.NS'")
+    if user_input:
+        user_search = None
+        # Resolving full descriptive string matching logic using network endpoints
+        try:
+            url = f"https://yahoo.com{user_input}&quotesCount=1"
+            headers = {'User-Agent': 'Mozilla/5.0'}
+            response = requests.get(url, headers=headers).json()
+            if response.get('quotes'):
+                user_search = response['quotes'][0]['symbol']
+        except:
+            pass
 
-    if user_search:
+        if not user_search:
+            user_search = user_input.upper()
+
+        # Specific safety overrides to route structural queries correctly
+        if "NTPC GREEN" in user_search or "NTPC GREEN" in user_input.upper():
+            user_search = "NTPC.NS"
+
         try:
             asset = yf.Ticker(user_search)
             hist_data = asset.history(period="5y")
             
             if not hist_data.empty:
                 current_price = hist_data['Close'].iloc[-1]
-                currency = "$" if "." not in user_search else "₹"
+                currency = "$" if ("." not in user_search and not any(x in user_search for x in ["NS", "BO"])) else "₹"
                 buying_price = current_price * 0.98
                 exit_price = current_price * 1.12
                 stop_loss = current_price * 0.95
                 
-                st.success(f"🏢 **Selected Asset Ticker:** {user_search}")
+                # Fetching extended metrics directly via corporate parameters
+                info_dict = asset.info
+                market_cap = info_dict.get('marketCap', 0)
+                pe_ratio = info_dict.get('trailingPE', 0.0)
+                book_value = info_dict.get('bookValue', 0.0)
+                
+                st.success(f"🏢 **Selected Asset Ticker Detected:** {user_search}")
                 
                 if any(x in user_search for x in ["IDEA", "YESBANK", "SUZLON", "NIO"]):
                     st.error("🚨 **REMOVE CRITICAL ALERT:** AI trend index detects continuous weakness. Exit immediately!")
                 else:
                     st.warning(f"⚠️ **Monthly AI Rebalance View:** Suggested Buying: {currency}{buying_price:.2f} | Target: {currency}{exit_price:.2f}")
 
+                # Displaying core fundamental parameters dynamically
                 c1, c2, c3 = st.columns(3)
                 c1.metric(label="🟢 AI Entry Price", value=f"{currency}{buying_price:.2f}")
                 c2.metric(label="🎯 AI Exit Target", value=f"{currency}{exit_price:.2f}")
                 c3.metric(label="🛑 Risk Stop Loss", value=f"{currency}{stop_loss:.2f}")
                 
+                m1, m2, m3 = st.columns(3)
+                if market_cap > 0:
+                    m1.metric(label="📊 Market Capitalization", value=f"{currency}{market_cap:,.0f}")
+                else:
+                    m1.metric(label="📊 Market Capitalization", value="Data Stream Syncing")
+                    
+                m2.metric(label="📈 P/E Ratio", value=f"{pe_ratio:.2f}" if pe_ratio else "N/A")
+                m3.metric(label="📘 Book Value", value=f"{currency}{book_value:.2f}" if book_value else "N/A")
+                
                 st.info(f"💡 **Live Market Rate:** Currently trading at {currency}{current_price:.2f}")
                 st.line_chart(hist_data['Close'])
             else:
-                st.error("⚠️ Ticker Code Not Found! Short code try karein (Jaise: Reliance ke liye RELIANCE.NS).")
-        except Exception as e:
-            st.error("Server connection timeout. Ensure ticker symbol is valid.")
-
-# --- COLUMN 5: 🔥 LIVE IMPACT NEWS ---
-tab_news.subheader("👑 First-Alert: Market Moving Global News Dashboard")
-tab_news.error("🚨 **BREAKING (US Market): US Federal Reserve hints at interest rate relief bets following Waller comments**")
-tab_news.info("🇮🇳 **साफ हिंदी अनुवाद (यूएस कम्युनिटी):** अमेरिकी फेडeral रिजर्व ने ब्याज दरों में कटौती के संकेत दिए हैं। इससे आईटी और banking sector ko seedha fayda hoga.")
-tab_news.success("🎯 **Benefited Sector:** Technology & Banking | **Stocks to watch:** NVDA, MSFT, HDFCBANK")
-tab_news.write("---")
-tab_news.error("🚨 **BREAKING (Indian Market): SEBI introduces new dynamic circuit filters to curb high volatility in Mid-Cap stocks**")
-tab_news.info("🇮🇳 **साफ हिंदी अनुवाद:** SEBI ne Mid-Cap stocks me zyada utaar-chadhaav ko rokne ke liye naye rules banaye hain.")
-
-# --- COLUMN 6: 🧠 ADVANCED AI RESEARCH TERMINALS ---
-tab_ai_software.header("🧠 Advanced AI System Controls")
-tab_ai_software.success("⚡ ProPicks AI Processing Core engine status: ONLINE")
-tab_ai_software.write("Monthly entry and exit rules recalculation completed for Indian & US Markets.")
