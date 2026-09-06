@@ -131,45 +131,46 @@ with tab_search:
             if key in cleaned_input or cleaned_input in key:
                 user_search = val
 
-        try:
-            asset = yf.Ticker(user_search)
-            hist_data = asset.history(period="5y")
+        asset = yf.Ticker(user_search)
+        hist_data = asset.history(period="5y")
+        
+        if not hist_data.empty:
+            current_price = hist_data['Close'].iloc[-1]
+            currency = "$" if ("." not in user_search and "NS" not in user_search and "BO" not in user_search) else "₹"
+            buying_price = current_price * 0.98
+            exit_price = current_price * 1.12
+            stop_loss = current_price * 0.95
             
-            if not hist_data.empty:
-                current_price = hist_data['Close'].iloc[-1]
-                currency = "$" if ("." not in user_search and "NS" not in user_search and "BO" not in user_search) else "₹"
-                buying_price = current_price * 0.98
-                exit_price = current_price * 1.12
-                stop_loss = current_price * 0.95
-                
-                st.success(f"🏢 **Selected Asset Ticker Detected:** {user_search}")
-                
-                if any(x in user_search for x in ["IDEA", "YESBANK", "SUZLON", "NIO"]):
-                    st.error("🚨 **REMOVE CRITICAL ALERT:** AI trend index detects continuous weakness. Exit immediately!")
-                else:
-                    st.warning(f"⚠️ **Monthly AI Rebalance View:** Suggested Buying: {currency}{buying_price:.2f} | Target: {currency}{exit_price:.2f}")
-
-                c1, c2, c3 = st.columns(3)
-                c1.metric(label="🟢 AI Entry Price", value=f"{currency}{buying_price:.2f}")
-                c2.metric(label="🎯 AI Exit Target", value=f"{currency}{exit_price:.2f}")
-                c3.metric(label="🛑 Risk Stop Loss", value=f"{currency}{stop_loss:.2f}")
-                
-                info_dict = asset.info
-                market_cap = info_dict.get('marketCap', 0)
-                pe_ratio = info_dict.get('trailingPE', 0.0)
-                book_value = info_dict.get('bookValue', 0.0)
-                
-                m1, m2, m3 = st.columns(3)
-                if market_cap > 0:
-                    m1.metric(label="📊 Market Capitalization", value=f"{currency}{market_cap:,.0f}")
-                else:
-                    m1.metric(label="📊 Market Capitalization", value="Data Stream Syncing")
-                    
-                m2.metric(label="📈 P/E Ratio", value=f"{pe_ratio:.2f}" if pe_ratio else "N/A")
-                m3.metric(label="📘 Book Value", value=f"{currency}{book_value:.2f}" if book_value else "N/A")
-                
-                st.info(f"💡 **Live Market Rate:** Currently trading at {currency}{current_price:.2f}")
-                st.line_chart(hist_data['Close'])
+            st.success(f"🏢 **Selected Asset Ticker Detected:** {user_search}")
+            
+            if any(x in user_search for x in ["IDEA", "YESBANK", "SUZLON", "NIO"]):
+                st.error("🚨 **REMOVE CRITICAL ALERT:** AI trend index detects continuous weakness. Exit immediately!")
             else:
-                st.error("⚠️ Ticker Error: Data stream empty. Please verify keyword name structure.")
-        except:
+                st.warning(f"⚠️ **Monthly AI Rebalance View:** Suggested Buying: {currency}{buying_price:.2f} | Target: {currency}{exit_price:.2f}")
+
+            c1, c2, c3 = st.columns(3)
+            c1.metric(label="🟢 AI Entry Price", value=f"{currency}{buying_price:.2f}")
+            c2.metric(label="🎯 AI Exit Target", value=f"{currency}{exit_price:.2f}")
+            c3.metric(label="🛑 Risk Stop Loss", value=f"{currency}{stop_loss:.2f}")
+            
+            info_dict = asset.info
+            market_cap = info_dict.get('marketCap', 0)
+            pe_ratio = info_dict.get('trailingPE', 0.0)
+            book_value = info_dict.get('bookValue', 0.0)
+            
+            m1, m2, m3 = st.columns(3)
+            if market_cap > 0:
+                m1.metric(label="📊 Market Capitalization", value=f"{currency}{market_cap:,.0f}")
+            else:
+                m1.metric(label="📊 Market Capitalization", value="Data Stream Syncing")
+                
+            m2.metric(label="📈 P/E Ratio", value=f"{pe_ratio:.2f}" if pe_ratio else "N/A")
+            m3.metric(label="📘 Book Value", value=f"{currency}{book_value:.2f}" if book_value else "N/A")
+            
+            st.info(f"💡 **Live Market Rate:** Currently trading at {currency}{current_price:.2f}")
+            st.line_chart(hist_data['Close'])
+        else:
+            st.error("⚠️ Ticker Error: Data stream empty. Please verify keyword name structure.")
+
+# --- CONTROL TAB 5: GLOBAL IMPACT DATA BANNER ---
+tab_news.subheader("👑 First-Alert: Market Moving Global News Dashboard")
