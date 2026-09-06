@@ -4,7 +4,7 @@ import pandas as pd
 import datetime
 import requests
 
-# Premium Fintech Ultra Wide Layout Configuration
+# Premium Ultra Wide Layout Configuration
 st.set_page_config(page_title="Investing Pro AI+", layout="wide")
 
 current_month = datetime.date.today().strftime('%B %Y')
@@ -36,6 +36,21 @@ buy_prices_ind = [2420.00, 4110.00, 1840.00, 1620.00, 1010.00, 1420.00, 780.00, 
 exit_prices_ind = [11.20, 22.40, 240.00, 260.00, 380.00, 32.10, 145.00, 210.00, 115.00, 84.00] * 2
 buy_prices_us = [224.50, 412.00, 128.10, 174.30, 162.00, 495.00, 210.00, 620.00, 142.00, 810.00, 160.00, 210.00, 680.00, 220.00, 52.00, 190.00, 450.00, 240.00, 290.00, 780.00]
 exit_prices_us = [8.20, 74.50, 19.10, 38.00, 11.40, 4.20, 12.50, 18.00, 3.10, 16.50] * 2
+
+# Core Universal Local Database Mapper for Bulletproof Fallback Triggers
+LOCAL_TICKER_DB = {
+    "TAPARIA": "TAPARIA.BO", "TAPARIA TOOLS": "TAPARIA.BO",
+    "TATA STEEL": "TATASTEEL.NS", "TATASTEEL": "TATASTEEL.NS",
+    "TATA MOTORS": "TATAMOTORS.NS", "TATAMOTORS": "TATAMOTORS.NS",
+    "RELIANCE": "RELIANCE.NS", "RELIANCE INDUSTRIES": "RELIANCE.NS",
+    "NTPC": "NTPC.NS", "NTPC GREEN": "NTPC.NS",
+    "TCS": "TCS.NS", "INFOSYS": "INFY.NS", "INFY": "INFY.NS",
+    "SUZLON": "SUZLON.NS", "ZOMATO": "ZOMATO.NS",
+    "HDFC BANK": "HDFCBANK.NS", "HDFCBANK": "HDFCBANK.NS",
+    "ICICI BANK": "ICICIBANK.NS", "AXIS BANK": "AXISBANK.NS",
+    "SBI": "SBIN.NS", "STATE BANK": "SBIN.NS",
+    "APPLE": "AAPL", "NVIDIA": "NVDA", "TESLA": "TSLA"
+}
 
 # --- CONTROL TAB 1: PROPICKS ACTIVE METRIC SHEETS ---
 tab_propicks.info("🔥 **Monthly Action Banner:** AI global models optimized for high-growth index tracking.")
@@ -97,32 +112,31 @@ us_ppe_buy, us_ppe_avoid = us_pp_etf.tabs(["🚀 Top 5 US ETFs", "⚠️ Top 10 
 for i in range(5): us_ppe_buy.success(f"📈 **{us_etf_profit[i]}** | 🟢 Buy Zone")
 for i in range(10): us_ppe_avoid.error(f"❌ **{us_etf_loss[i]}** | 🔴 Exit Zone")
 
-# --- CONTROL TAB 4: 🔍 ADVANCED BROKER-STYLE SEARCH ENGINE (MULTIPAGE CONFIG) ---
+# --- CONTROL TAB 4: 🔍 ADVANCED BROKER-STYLE SEARCH ENGINE ---
 with tab_search:
-    st.header("🔍 Broker-Style Universal Search Terminal")
+    st.header("🔍 Broker-Style Universal Search Engine")
     
-    # Clean textual entry box
-    user_input = st.text_input("Search Company Name or Ticker Symbol (यहाँ कंपनी का नाम या कोड लिखें):", value="Tata Motors").strip()
+    user_input = st.text_input("Search Company Name or Ticker Symbol (यहाँ कंपनी का नाम लिखें):", value="Tata Steel").strip()
     
     if user_input:
-        user_ticker = user_input.upper()
+        cleaned_input = user_input.upper()
+        user_ticker = LOCAL_TICKER_DB.get(cleaned_input, cleaned_input)
         
-        # Real-time Background Network Resolver Engine to resolve full names to valid tickers
-        try:
-            resolver_url = f"https://yahoo.com{user_input}&quotesCount=3"
-            net_response = requests.get(resolver_url, headers={'User-Agent': 'Mozilla/5.0'}).json()
-            if net_response.get('quotes') and len(net_response['quotes']) > 0:
-                user_ticker = net_response['quotes'][0]['symbol']
-        except:
-            pass
-            
-        # Standard safety re-routing overrides
-        if "TATA STEEL" in user_input.upper(): user_ticker = "TATASTEEL.NS"
-        if "TATA MOTORS" in user_input.upper(): user_ticker = "TATAMOTORS.NS"
-        if "TAPARIA" in user_input.upper(): user_ticker = "TAPARIA.BO"
-        if "NTPC GREEN" in user_input.upper(): user_ticker = "NTPC.NS"
+        # Priority 1: Dynamic online auto-resolver for high precision lookups
+        if user_ticker == cleaned_input:
+            try:
+                url = f"https://yahoo.com{user_input}&quotesCount=5"
+                res = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'}).json()
+                if res.get('quotes') and len(res['quotes']) > 0:
+                    user_ticker = res['quotes'][0]['symbol']
+            except:
+                pass
+                
+        # Priority 2: Smart suffix fallback loops for absolute search execution
+        if "." not in user_ticker and not any(x in user_ticker for x in ["-", "="]):
+            if any(k in cleaned_input for k in ["TATA", "RELIANCE", "NTPC", "STEEL", "MOTOR", "ZOMATO", "SUZLON", "HDFC", "SBI"]):
+                user_ticker = user_ticker + ".NS"
 
-        # Processing target asset extraction via ticker parameters
         asset = yf.Ticker(user_ticker)
         hist_data = asset.history(period="5y")
         
@@ -134,20 +148,19 @@ with tab_search:
             pct_change = (price_change / prev_close) * 100
             currency = "$" if ("." not in user_ticker and "NS" not in user_ticker and "BO" not in user_ticker) else "₹"
             
-            # --- HEADER DASHBOARD ---
             st.subheader(f"🏢 {info.get('longName', user_ticker)} ({user_ticker})")
             color_prefix = "🟢" if price_change >= 0 else "🔴"
             st.markdown(f"### {currency}{current_price:,.2f}  \n{color_prefix} **{price_change:+.2f} ({pct_change:+.2f}%)**")
             
-            # --- GROWW DESIGN INTERFACE MULTI-SUBTABS ---
+            # --- GROWW MULTI-TAB VIEW MODULES ---
             sub_overview, sub_technicals, sub_news, sub_events = st.tabs([
-                "📈 Overview & Performance", 
+                "📋 Overview & Performance", 
                 "📊 Technical Indicators", 
                 "🔥 Real-Time News Stream", 
                 "📅 Corporate Events"
             ])
             
-            # 1. OVERVIEW GRAPHICS SECTION
+            # 1. OVERVIEW & FUNDAMENTALS
             with sub_overview:
                 st.markdown("#### ⏳ 5-Year Historical Performance Trend Line")
                 st.line_chart(hist_data['Close'])
@@ -156,11 +169,3 @@ with tab_search:
                 f1, f2, f3 = st.columns(3)
                 m_cap = info.get('marketCap', 0)
                 if m_cap > 0:
-                    f1.metric("Market Cap", f"{currency}{m_cap:,.0f}")
-                else:
-                    f1.metric("Market Cap", "Data stream syncing")
-                f2.metric("P/E Ratio (TTM)", f"{info.get('trailingPE', 0.0):.2f}" if info.get('trailingPE') else "N/A")
-                f3.metric("Book Value", f"{currency}{info.get('bookValue', 0.0):.2f}" if info.get('bookValue') else "N/A")
-                
-                f4, f5, f6 = st.columns(3)
-                f4.metric("Trailing EPS", f"{info.get('trailingEps', 0.0):.2f}" if info.get('trailingEps') else "N/A")
