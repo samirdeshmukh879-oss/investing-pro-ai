@@ -125,15 +125,11 @@ with tab_search:
     
     if user_input:
         cleaned_input = user_input.upper()
-        # Direct key fallback assignments to bypass request dependencies
         user_search = LOCAL_TICKER_DB.get(cleaned_input, cleaned_input)
         
-        # Partial containment check for names containing specific variations
-        if user_search == cleaned_input:
-            for key, val in LOCAL_TICKER_DB.items():
-                if key in cleaned_input or cleaned_input in key:
-                    user_search = val
-                    break
+        for key, val in LOCAL_TICKER_DB.items():
+            if key in cleaned_input or cleaned_input in key:
+                user_search = val
 
         try:
             asset = yf.Ticker(user_search)
@@ -158,7 +154,6 @@ with tab_search:
                 c2.metric(label="🎯 AI Exit Target", value=f"{currency}{exit_price:.2f}")
                 c3.metric(label="🛑 Risk Stop Loss", value=f"{currency}{stop_loss:.2f}")
                 
-                # Fetching absolute static tracking references
                 info_dict = asset.info
                 market_cap = info_dict.get('marketCap', 0)
                 pe_ratio = info_dict.get('trailingPE', 0.0)
@@ -173,3 +168,8 @@ with tab_search:
                 m2.metric(label="📈 P/E Ratio", value=f"{pe_ratio:.2f}" if pe_ratio else "N/A")
                 m3.metric(label="📘 Book Value", value=f"{currency}{book_value:.2f}" if book_value else "N/A")
                 
+                st.info(f"💡 **Live Market Rate:** Currently trading at {currency}{current_price:.2f}")
+                st.line_chart(hist_data['Close'])
+            else:
+                st.error("⚠️ Ticker Error: Data stream empty. Please verify keyword name structure.")
+        except:
