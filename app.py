@@ -97,16 +97,15 @@ us_ppe_buy, us_ppe_avoid = us_pp_etf.tabs(["🚀 Top 5 US ETFs", "⚠️ Top 10 
 for i in range(5): us_ppe_buy.success(f"📈 **{us_etf_profit[i]}** | 🟢 Buy Zone")
 for i in range(10): us_ppe_avoid.error(f"❌ **{us_etf_loss[i]}** | 🔴 Exit Zone")
 
-# --- COLUMN 4: 🔍 BROKER-STYLE UNIVERSAL COMPANY NAME SEARCH ENGINE ---
+# --- COLUMN 4: 🔍 BROKER-STYLE COMPANY NAME SEARCH ENGINE ---
 with tab_search:
     st.header("🔍 Broker-Style Universal Search Engine")
     st.info("💡 **HINT:** Ab aap kisi bhi share ka naam seedhe type kar sakte hain! Jaise: `Reliance`, `Tata Motors`, `NTPC`, `Apple` etc.")
     
-    user_input = st.text_input("Enter Company Name or Ticker (कंपनी का नाम यहाँ लिखें):", value="NTPC").strip()
+    user_input = st.text_input("Enter Company Name or Ticker (कंपनी का naam yahan likhein):", value="NTPC").strip()
     
     if user_input:
         user_search = None
-        # Resolving full descriptive string matching logic using network endpoints
         try:
             url = f"https://yahoo.com{user_input}&quotesCount=1"
             headers = {'User-Agent': 'Mozilla/5.0'}
@@ -119,8 +118,7 @@ with tab_search:
         if not user_search:
             user_search = user_input.upper()
 
-        # Specific safety overrides to route structural queries correctly
-        if "NTPC GREEN" in user_search or "NTPC GREEN" in user_input.upper():
+        if "NTPC GREEN" in user_input.upper():
             user_search = "NTPC.NS"
 
         try:
@@ -134,7 +132,6 @@ with tab_search:
                 exit_price = current_price * 1.12
                 stop_loss = current_price * 0.95
                 
-                # Fetching extended metrics directly via corporate parameters
                 info_dict = asset.info
                 market_cap = info_dict.get('marketCap', 0)
                 pe_ratio = info_dict.get('trailingPE', 0.0)
@@ -147,7 +144,6 @@ with tab_search:
                 else:
                     st.warning(f"⚠️ **Monthly AI Rebalance View:** Suggested Buying: {currency}{buying_price:.2f} | Target: {currency}{exit_price:.2f}")
 
-                # Displaying core fundamental parameters dynamically
                 c1, c2, c3 = st.columns(3)
                 c1.metric(label="🟢 AI Entry Price", value=f"{currency}{buying_price:.2f}")
                 c2.metric(label="🎯 AI Exit Target", value=f"{currency}{exit_price:.2f}")
@@ -165,3 +161,9 @@ with tab_search:
                 st.info(f"💡 **Live Market Rate:** Currently trading at {currency}{current_price:.2f}")
                 st.line_chart(hist_data['Close'])
             else:
+                st.error("⚠️ Ticker System Error: Match nahi mila. Kripya sahi name ya exact short symbol check karein.")
+        except Exception as e:
+            st.error("Server connection timeout. Ensure ticker symbol is valid.")
+
+# --- COLUMN 5: 🔥 LIVE IMPACT NEWS ---
+tab_news.subheader("👑 First-Alert: Market Moving Global News Dashboard")
