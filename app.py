@@ -2,7 +2,6 @@ import streamlit as st
 import yfinance as yf
 import pandas as pd
 import datetime
-import requests
 
 # Page configuration for Premium Wide Fintech Layout
 st.set_page_config(page_title="Investing Pro AI+", layout="wide")
@@ -36,6 +35,27 @@ buy_prices_ind = [2420.00, 4110.00, 1840.00, 1620.00, 1010.00, 1420.00, 780.00, 
 exit_prices_ind = [11.20, 22.40, 240.00, 260.00, 380.00, 32.10, 145.00, 210.00, 115.00, 84.00] * 2
 buy_prices_us = [224.50, 412.00, 128.10, 174.30, 162.00, 495.00, 210.00, 620.00, 142.00, 810.00, 160.00, 210.00, 680.00, 220.00, 52.00, 190.00, 450.00, 240.00, 290.00, 780.00]
 exit_prices_us = [8.20, 74.50, 19.10, 38.00, 11.40, 4.20, 12.50, 18.00, 3.10, 16.50] * 2
+
+# --- LOCAL DATABASE MATRIX DICTIONARY TO PREVENT BLANK SCREEN & FIX TEXT SEARCH ---
+LOCAL_TICKER_DB = {
+    "TAPARIA": "TAPARIA.BO",
+    "TAPARIA TOOLS": "TAPARIA.BO",
+    "RELIANCE": "RELIANCE.NS",
+    "RELIANCE INDUSTRIES": "RELIANCE.NS",
+    "NTPC": "NTPC.NS",
+    "NTPC GREEN": "NTPC.NS",
+    "TCS": "TCS.NS",
+    "INFOSYS": "INFY.NS",
+    "INFY": "INFY.NS",
+    "SUZLON": "SUZLON.NS",
+    "ZOMATO": "ZOMATO.NS",
+    "TATA MOTORS": "TATAMOTORS.NS",
+    "HDFC BANK": "HDFCBANK.NS",
+    "SBI": "SBIN.NS",
+    "APPLE": "AAPL",
+    "NVIDIA": "NVDA",
+    "TESLA": "TSLA"
+}
 
 # --- COLUMN 1: PROPICKS AI PREMIUM CARDS DASHBOARD ---
 tab_propicks.info("🔥 **Monthly Action Banner:** AI global models optimized for high-growth index tracking.")
@@ -100,26 +120,27 @@ for i in range(10): us_ppe_avoid.error(f"❌ **{us_etf_loss[i]}** | 🔴 Exit Zo
 # --- COLUMN 4: 🔍 BROKER-STYLE COMPANY NAME SEARCH ENGINE ---
 with tab_search:
     st.header("🔍 Broker-Style Universal Search Engine")
-    st.info("💡 **HINT:** Ab aap kisi bhi share ka naam seedhe type kar sakte hain! Jaise: `Reliance`, `Tata Motors`, `NTPC`, `Apple` etc.")
+    st.info("💡 **HINT:** Ab aap kisi bhi share ka naam seedhe type kar sakte hain! Jaise: `Taparia`, `Reliance`, `NTPC`, `Apple` etc.")
     
-    user_input = st.text_input("Enter Company Name or Ticker (कंपनी का naam yahan likhein):", value="NTPC").strip()
+    user_input = st.text_input("Enter Company Name or Ticker (कंपनी का नाम लिखें):", value="Taparia").strip()
     
     if user_input:
+        cleaned_input = user_input.upper()
         user_search = None
-        try:
-            url = f"https://yahoo.com{user_input}&quotesCount=1"
-            headers = {'User-Agent': 'Mozilla/5.0'}
-            response = requests.get(url, headers=headers).json()
-            if response.get('quotes'):
-                user_search = response['quotes'][0]['symbol']
-        except:
-            pass
-
+        
+        # Priority 1: Match directly from our absolute offline secure matrix dictionary
+        if cleaned_input in LOCAL_TICKER_DB:
+            user_search = LOCAL_TICKER_DB[cleaned_input]
+        else:
+            # Priority 2: Incase profile is custom, scan text patterns to find key segment
+            for key, val in LOCAL_TICKER_DB.items():
+                if key in cleaned_input or cleaned_input in key:
+                    user_search = val
+                    break
+        
+        # Priority 3: Ultimate raw uppercase structural match fallback loop
         if not user_search:
-            user_search = user_input.upper()
-
-        if "NTPC GREEN" in user_input.upper():
-            user_search = "NTPC.NS"
+            user_search = cleaned_input
 
         try:
             asset = yf.Ticker(user_search)
@@ -155,15 +176,3 @@ with tab_search:
                 else:
                     m1.metric(label="📊 Market Capitalization", value="Data Stream Syncing")
                     
-                m2.metric(label="📈 P/E Ratio", value=f"{pe_ratio:.2f}" if pe_ratio else "N/A")
-                m3.metric(label="📘 Book Value", value=f"{currency}{book_value:.2f}" if book_value else "N/A")
-                
-                st.info(f"💡 **Live Market Rate:** Currently trading at {currency}{current_price:.2f}")
-                st.line_chart(hist_data['Close'])
-            else:
-                st.error("⚠️ Ticker System Error: Match nahi mila. Kripya sahi name ya exact short symbol check karein.")
-        except Exception as e:
-            st.error("Server connection timeout. Ensure ticker symbol is valid.")
-
-# --- COLUMN 5: 🔥 LIVE IMPACT NEWS ---
-tab_news.subheader("👑 First-Alert: Market Moving Global News Dashboard")
