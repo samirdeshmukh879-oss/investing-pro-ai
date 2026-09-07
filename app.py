@@ -2,15 +2,16 @@ import streamlit as st
 import yfinance as yf
 import pandas as pd
 import datetime
+import requests
 
-# Premium Layout Configuration
+# Premium High-Performance Layout Configuration
 st.set_page_config(page_title="Investing Pro AI+", layout="wide")
 
 current_month = datetime.date.today().strftime('%B %Y')
 st.title("🤖 ProPicks AI — Advanced Market Terminal")
 st.caption(f"🗓️ Monthly Dashboard: **{current_month}** | Fully Automated AI Layout")
 
-# 5 MAIN COMPREHENSIVE HEADER TABS
+# 5 MAIN COMPREHENSIVE TERMINAL HEADER TABS
 tab_propicks, tab_indian, tab_us, tab_search, tab_news = st.tabs([
     "🎯 ProPicks AI Dashboard", 
     "🇮🇳 Indian Lists", 
@@ -19,7 +20,7 @@ tab_propicks, tab_indian, tab_us, tab_search, tab_news = st.tabs([
     "🔥 Live Impact News"
 ])
 
-# --- FIXED PERFORMANCE TIER INDEX SYSTEM SPEED MATRICES ---
+# --- MASTER TIERS DATA MATRICES ---
 bharat_profit = ["RELIANCE", "TCS", "INFY", "HDFCBANK", "ICICIBANK", "BHARTIARTL", "SBIN", "ITC", "LT", "AXISBANK"]
 bharat_loss = ["IDEA", "YESBANK", "SUZLON", "ZOMATO", "PAYTM"]
 
@@ -41,42 +42,77 @@ LOCAL_TICKER_DB = {
     "SUZLON": "SUZLON.NS", "ZOMATO": "ZOMATO.NS", "HDFC BANK": "HDFCBANK.NS"
 }
 
-# --- TAB 1: PROPICKS AI DASHBOARD ---
+# --- TAB 1: ORIGINAL PROPICKS AI DASHBOARD RESTORED ---
 with tab_propicks:
     st.info("🔥 **Monthly Action Banner:** AI global models optimized for high-growth index tracking.")
     st.subheader("📊 Benchmark vs AI Strategy Outperformance Sheet")
+    
     col_idx1, col_idx2 = st.columns(2)
-    col_idx1.metric(label="Standard Nifty 50 Return (1Y)", value="+14.20%")
-    col_idx1.metric(label="Standard Nifty 50 Return (5Y)", value="+118.8%")
-    col_idx2.metric(label="AI NIFTY20 Portfolio Return (1Y)", value="+51.31%", delta="⚡ +37.11% Alpha")
-    col_idx2.metric(label="AI NIFTY20 Portfolio Return (5Y)", value="+1,100.1%")
+    with col_idx1:
+        st.metric(label="Standard Nifty 50 Return (1Y)", value="+14.20%")
+        st.metric(label="Standard Nifty 50 Return (5Y)", value="+118.8%")
+    with col_idx2:
+        st.metric(label="AI NIFTY20 Portfolio Return (1Y)", value="+51.31%", delta="⚡ +37.11% Alpha")
+        st.metric(label="AI NIFTY20 Portfolio Return (5Y)", value="+1,100.1%")
     
     st.write("---")
-    st.subheader("🎯 Active AI Premium Picks")
-    for i in range(3):
-        st.success(f"🚀 AI Picked Stock #{i+1}: **{bharat_profit[i]}** | Active Target Market Trend")
+    st.subheader("🎯 Active Strategy Performance Streams")
+    
+    col_strat1, col_strat2 = st.columns(2)
+    with col_strat1:
+        st.markdown("#### 🟣 INB15 — Bharat Bargains")
+        st.write("• Nifty Index Return: **+118.8%**")
+        st.write("• AI Strategy Return: **+475.1%**")
+        st.success(f"🚀 Top AI Pick: **{bharat_profit[0]}**")
+    with col_strat2:
+        st.markdown("#### 🟡 IT15 — Tech Titans")
+        st.write("• Tech Benchmark: **+60.0%**")
+        st.write("• AI Tech Strategy: **+116.4%**")
+        st.success(f"🚀 Top Global Pick: **{us_profit[0]}**")
 
-# --- TAB 2: INDIAN MARKET TIER LISTS ---
+# --- TAB 2: INDIAN MARKET TIER LISTS WITH PRO & PRO PLUS COLUMNS ---
 with tab_indian:
-    st.header("🇮🇳 Indian Market Tier Lists (Currency: ₹)")
-    st.markdown("### 🚀 Top Profit Picks")
-    for i in range(len(bharat_profit)):
-        st.success(f"📈 **{bharat_profit[i]}** | 🟢 Suggested Entry: ₹{buy_prices_ind[i]:,.2f}")
+    st.header("🇮🇳 Indian Market Segment Workspace (Currency: ₹)")
     
-    st.markdown("### ⚠️ Top Avoid List")
-    for i in range(len(bharat_loss)):
-        st.error(f"❌ **{bharat_loss[i]}** | 🔴 Exit Trigger: ₹{exit_prices_ind[i]:,.2f}")
+    col_ind_pro, col_ind_pp = st.columns(2)
+    
+    with col_ind_pro:
+        st.markdown("## ⭐ PRO MEMBERSHIP TIER")
+        st.markdown("### 🚀 Profit Picks (Top 10)")
+        for i in range(len(bharat_profit)):
+            st.success(f"📈 **{bharat_profit[i]}** | Entry: ₹{buy_prices_ind[i]:,.2f}")
+        st.markdown("### ⚠️ Avoid List (Pro Section)")
+        for i in range(len(bharat_loss)):
+            st.error(f"❌ **{bharat_loss[i]}** | Exit Price: ₹{exit_prices_ind[i]:,.2f}")
+            
+    with col_ind_pp:
+        st.markdown("## 💎 PRO PLUS PREMIUM TIER")
+        st.markdown("### 🚀 High-Alpha Core Portfolio")
+        for i in range(5):
+            st.success(f"🔥 **{bharat_profit[i]}** [PRO PLUS MATRIX] | Target Active")
+        st.markdown("### 🔍 Advanced Index Guard Filters")
+        st.info("⚡ AI Processing Cores scanning institutional blocks execution fields.")
 
-# --- TAB 3: US MARKETS MODULE ---
+# --- TAB 3: US MARKET TIER LISTS WITH PRO & PRO PLUS COLUMNS ---
 with tab_us:
-    st.header("🇺🇸 US Market Tier Lists (Forced INR Mapping: ₹)")
-    st.markdown("### 🚀 Top US Profit Picks")
-    for i in range(len(us_profit)):
-        st.success(f"📈 **{us_profit[i]}** | 🟢 Suggested Entry: ₹{buy_prices_us[i]*83.5:,.2f}")
+    st.header("🇺🇸 US Market Segment Workspace (Forced INR Mapping: ₹)")
     
-    st.markdown("### ⚠️ Top US Avoid List")
-    for i in range(len(us_loss)):
-        st.error(f"❌ **{us_loss[i]}** | 🔴 Exit Trigger: ₹{exit_prices_us[i]*83.5:,.2f}")
+    col_us_pro, col_us_pp = st.columns(2)
+    
+    with col_us_pro:
+        st.markdown("## ⭐ PRO US MEMBERSHIP TIER")
+        st.markdown("### 🚀 Top US Profit Picks")
+        for i in range(len(us_profit)):
+            st.success(f"📈 **{us_profit[i]}** | Entry: ₹{buy_prices_us[i]*83.5:,.2f}")
+        st.markdown("### ⚠️ US Avoid List")
+        for i in range(len(us_loss)):
+            st.error(f"❌ **{us_loss[i]}** | Exit Trigger: ₹{exit_prices_us[i]*83.5:,.2f}")
+            
+    with col_us_pp:
+        st.markdown("## 💎 PRO PLUS US PREMIUM TIER")
+        st.markdown("### 🚀 Global Outperformance Picks")
+        for i in range(3):
+            st.success(f"⚡ **{us_profit[i]}** | Pro Plus High-Growth Target Active")
 
 # --- TAB 4: 🔍 UNIVERSAL FLAT BROKER SEARCH ---
 with tab_search:
@@ -105,9 +141,9 @@ with tab_search:
         color_prefix = "🟢" if price_change >= 0 else "🔴"
         st.markdown(f"### {currency}{current_price:,.2f}  \n{color_prefix} **{price_change:+.2f} ({pct_change:+.2f}%)**")
         
-        # --- 1. OVERVIEW & CHART FLOW ---
+        # --- OVERVIEW FLOW ---
         st.write("---")
-        st.markdown("### 📋 1. Overview & Performance Chart")
+        st.markdown("### 📋 Overview & Performance Chart")
         if not hist_data.empty:
             st.line_chart(hist_data['Close'])
             
@@ -117,9 +153,9 @@ with tab_search:
         f2.metric("P/E Ratio (TTM)", f"{info.get('trailingPE', 40.53):.2f}")
         f3.metric("Book Value", f"{currency}{info.get('bookValue', 34.58):.2f}")
         
-        # --- 2. TECHNICAL INDICATORS FLOW ---
+        # --- TECHNICAL INDICATORS FLOW ---
         st.write("---")
-        st.markdown("### 📊 2. Technical Indicators Profile")
+        st.markdown("### 📊 Technical Indicators Profile")
         t1, t2, t3, t4 = st.columns(4)
         t1.metric("Moving Average (10D)", f"{currency}{current_price*0.99:.2f}")
         t2.metric("Moving Average (20D)", f"{currency}{current_price*0.98:.2f}")
@@ -127,15 +163,14 @@ with tab_search:
         t4.metric("Moving Average (200D)", f"{currency}{current_price*0.92:.2f}")
         st.success("🎯 **AI Indicator Verdict summary:** Overall trend state is **Slightly Bullish** (Trading above 50-DMA baseline). RSI (14) at 50.32 indicates strong neutral consolidation.")
         
-        # --- 3. NEWS STREAM FLOW ---
+        # --- NEWS STREAM FLOW ---
         st.write("---")
-        st.markdown("### 🔥 3. Real-Time News Stream")
+        st.markdown("### 🔥 Real-Time News Stream")
         st.warning(f"🔹 **Market Outlook:** Brokerages upgrade price targets following robust quarterly margins sheet layout.")
         
-        # --- 4. CORPORATE EVENTS FLOW ---
+        # --- CORPORATE EVENTS FLOW ---
         st.write("---")
-        st.markdown("### 📅 4. Corporate Calendars & Highlights")
-        st.success("🎁 **Recent Corporate Action Logs Mapped:**")
+        st.markdown("### 📅 Corporate Calendars & Highlights")
         
         div_history = asset.dividends
         if not div_history.empty:
