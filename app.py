@@ -20,8 +20,8 @@ tab_propicks, tab_indian, tab_us, tab_search, tab_news = st.tabs([
 ])
 
 # --- FIXED PERFORMANCE TIER INDEX SYSTEM SPEED MATRICES ---
-bharat_profit = ["RELIANCE.NS", "TCS.NS", "INFY.NS", "HDFCBANK.NS", "ICICIBANK.NS", "BHARTIARTL.NS", "SBIN.NS", "ITC.NS", "LT.NS", "AXISBANK.NS"]
-bharat_loss = ["IDEA.NS", "YESBANK.NS", "SUZLON.NS", "ZOMATO.NS", "PAYTM.NS"]
+bharat_profit = ["RELIANCE", "TCS", "INFY", "HDFCBANK", "ICICIBANK", "BHARTIARTL", "SBIN", "ITC", "LT", "AXISBANK"]
+bharat_loss = ["IDEA", "YESBANK", "SUZLON", "ZOMATO", "PAYTM"]
 
 us_profit = ["AAPL", "MSFT", "NVDA", "AMZN", "GOOGL"]
 us_loss = ["NIO", "BABA", "INTC", "PYPL", "SNAP"]
@@ -31,6 +31,15 @@ exit_prices_ind = [11.20, 22.40, 240.00, 260.00, 380.00]
 
 buy_prices_us = [224.50, 412.00, 128.10, 174.30, 162.00]
 exit_prices_us = [8.20, 74.50, 19.10, 38.00, 11.40]
+
+LOCAL_TICKER_DB = {
+    "TATA STEEL": "TATASTEEL.NS", "TATASTEEL": "TATASTEEL.NS",
+    "TATA MOTORS": "TATAMOTORS.NS", "TATAMOTORS": "TATAMOTORS.NS",
+    "NTPC GREEN ENERGY": "NTPC.NS", "NTPC GREEN": "NTPC.NS", "NTPC": "NTPC.NS",
+    "RELIANCE": "RELIANCE.NS", "RELIANCE INDUSTRIES": "RELIANCE.NS",
+    "TCS": "TCS.NS", "INFOSYS": "INFY.NS", "INFY": "INFY.NS",
+    "SUZLON": "SUZLON.NS", "ZOMATO": "ZOMATO.NS", "HDFC BANK": "HDFCBANK.NS"
+}
 
 # --- TAB 1: PROPICKS AI DASHBOARD ---
 with tab_propicks:
@@ -45,25 +54,24 @@ with tab_propicks:
     st.write("---")
     st.subheader("🎯 Active AI Premium Picks")
     for i in range(3):
-        st.success(f"🚀 AI Picked Stock #{i+1}: **{bharat_profit[i].split('.')[0]}** | Active Target Market Trend")
+        st.success(f"🚀 AI Picked Stock #{i+1}: **{bharat_profit[i]}** | Active Target Market Trend")
 
 # --- TAB 2: INDIAN MARKET TIER LISTS ---
 with tab_indian:
     st.header("🇮🇳 Indian Market Tier Lists (Currency: ₹)")
     st.markdown("### 🚀 Top Profit Picks")
     for i in range(len(bharat_profit)):
-        st.success(f"📈 **{bharat_profit[i].split('.')[0]}** | 🟢 Suggested Entry: ₹{buy_prices_ind[i]:,.2f}")
+        st.success(f"📈 **{bharat_profit[i]}** | 🟢 Suggested Entry: ₹{buy_prices_ind[i]:,.2f}")
     
     st.markdown("### ⚠️ Top Avoid List")
     for i in range(len(bharat_loss)):
-        st.error(f"❌ **{bharat_loss[i].split('.')[0]}** | 🔴 Exit Trigger: ₹{exit_prices_ind[i]:,.2f}")
+        st.error(f"❌ **{bharat_loss[i]}** | 🔴 Exit Trigger: ₹{exit_prices_ind[i]:,.2f}")
 
 # --- TAB 3: US MARKETS MODULE ---
 with tab_us:
     st.header("🇺🇸 US Market Tier Lists (Forced INR Mapping: ₹)")
     st.markdown("### 🚀 Top US Profit Picks")
     for i in range(len(us_profit)):
-        # Converting dollar array values dynamically to INR for consistency
         st.success(f"📈 **{us_profit[i]}** | 🟢 Suggested Entry: ₹{buy_prices_us[i]*83.5:,.2f}")
     
     st.markdown("### ⚠️ Top US Avoid List")
@@ -85,14 +93,13 @@ with tab_search:
         current_price = hist_data['Close'].iloc[-1] if not hist_data.empty else 185.52
         prev_close = info.get('previousClose', current_price)
         
-        # Currency check rule - default to INR mapping
         currency = "₹"
         if "." not in user_ticker and "NS" not in user_ticker and "BO" not in user_ticker:
             current_price = current_price * 83.5
             prev_close = prev_close * 83.5
             
         price_change = current_price - prev_close
-        pct_change = (price_change / prev_close) * 100
+        pct_change = (price_change / prev_close) * 100 if prev_close != 0 else 0.0
         
         st.subheader(f"🏢 {info.get('longName', user_ticker)} ({user_ticker})")
         color_prefix = "🟢" if price_change >= 0 else "🔴"
@@ -123,7 +130,7 @@ with tab_search:
         # --- 3. NEWS STREAM FLOW ---
         st.write("---")
         st.markdown("### 🔥 3. Real-Time News Stream")
-        st.warning(f"🔹 **Market Outlook:** Brokerages upgrade {info.get('longName', user_ticker)} price targets following robust quarterly margins sheet layout.")
+        st.warning(f"🔹 **Market Outlook:** Brokerages upgrade price targets following robust quarterly margins sheet layout.")
         
         # --- 4. CORPORATE EVENTS FLOW ---
         st.write("---")
